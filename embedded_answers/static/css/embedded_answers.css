@@ -1,0 +1,68 @@
+.embedded_answers .question_prompt {
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+.embedded_answers .feedback {
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+.embedded_answers .hint {
+  text-align: left;
+  padding-bottom: 20px;
+}
+
+.embedded_answers .reset_button {
+	height: 40px;
+	vertical-align: middle;
+	font-weight: 600;
+}
+
+.embedded_answers .hint_button {
+	height: 40px;
+	vertical-align: middle;
+	font-weight: 600;
+}
+
+.embedded_answers .check_button {
+	height: 40px;
+	vertical-align: middle;
+	font-weight: 600;
+}
+
+.embedded_answers .problem_progress {
+    display: inline-block;
+    padding-left: 5px;
+    color: #666;
+    font-weight: 100;
+    font-size: 1em;
+}
+
+.embedded_answers .problem_header {
+    display: inline-block;
+}
+
+.embedded_answers .correct {
+    color: #1d9348;
+}
+
+.embedded_answers .incorrect {
+    color: #b2060e;
+}
+
+.embedded_answers .feedback_number_correct {
+    color: #1d9348;
+    position: relative;
+    top: -0.5em;
+    font-size: 80%;
+    font-weight: bold;
+}
+
+.embedded_answers .feedback_number_incorrect {
+    color: #b2060e;
+    position: relative;
+    top: -0.5em;
+    font-size: 80%;
+    font-weight: bold;
+}
