@@ -56,14 +56,15 @@ class EmbeddedAnswersXBlock(XBlock):
                 </body>
                 <optionresponse>
                     <optioninput id="i1">
-                        <option correct="True">tomato<optionhint>Since the tomato is the fertilized ovary of a tomato plant and contains seeds, it is a fruit.</optionhint></option>
-                        <option correct="False">potato<optionhint>A potato is an edible part of a plant in tuber form and is a vegetable, not a fruit.</optionhint></option>
+                        <option correct="True">tomato<optionhint>Correct main response.</optionhint></option>
+                        <option correct="True">Tomato<optionhint>Correct alternative response.</optionhint></option>
+                        <option correct="False">tomatoo<optionhint>Incorrect response.</optionhint></option>
                     </optioninput>
                 </optionresponse>
                 <optionresponse>
                     <optioninput id="i2">
-                        <option correct="False">cucumber<optionhint>Many people mistakenly think a cucumber is a vegetable. However, because a cucumber is the fertilized ovary of a cucumber plant and contains seeds, it is a fruit.</optionhint></option>
                         <option correct="True">onion<optionhint>The onion is the bulb of the onion plant and contains no seeds and is therefore a vegetable.</optionhint></option>
+                        <option correct="True">Onion<optionhint>Correct alternative response.</optionhint></option>
                     </optioninput>
                 </optionresponse>
                 <demandhint>
@@ -86,13 +87,13 @@ class EmbeddedAnswersXBlock(XBlock):
         default={},
     )
 
-    selection_order = Dict(
-        help=_('Order of selections in body'),
+    input_text_order = Dict(
+        help=_('Order of input_texts in body'),
         scope=Scope.user_state,
         default={},
     )
 
-    selections = Dict(
+    input_texts = Dict(
         help=_('Saved student input values'),
         scope=Scope.user_state,
         default={},
@@ -208,18 +209,18 @@ class EmbeddedAnswersXBlock(XBlock):
         Save student answer
         '''
 
-        self.selections = submissions['selections']
-        self.selection_order = submissions['selection_order']
+        self.input_texts = submissions['responses']
+        self.input_text_order = submissions['responses_order']
 
         self.current_feedback = ''
 
         correct_count = 0
         i18n_ = self.runtime.service(self, "i18n").ugettext
-        # use sorted selection_order to iterate through selections dict
-        for key,pos in sorted(self.selection_order.iteritems(), key=lambda (k,v): (v,k)):
-            selected_text = self.selections[key]
+        # use sorted input_text_order to iterate through input_texts dict
+        for key,pos in sorted(self.input_text_order.iteritems(), key=lambda (k,v): (v,k)):
+            selected_text = self.input_texts[key]
 
-            if self.correctness[key][selected_text] == 'True':
+            if self.correctness.get(key,dict()).get(selected_text,'False').lower() in ('true',):
                 default_feedback = '<p class="correct"><strong>(' + str(pos) + ') ' + i18n_('Correct') + '</strong></p>'
                 if selected_text in self.feedback[key]:
                     if self.feedback[key][selected_text] is not None:
@@ -245,7 +246,7 @@ class EmbeddedAnswersXBlock(XBlock):
         self._publish_grade()
 
         self.runtime.publish(self, 'dropdown_selected', {
-            'selections': self.selections,
+            'input_texts': self.input_texts,
             'correctness': self.student_correctness,
         })
         self._publish_problem_check()
@@ -255,10 +256,10 @@ class EmbeddedAnswersXBlock(XBlock):
         result = {
             'success': True,
             'problem_progress': self._get_problem_progress(),
-            'submissions': self.selections,
+            'submissions': self.input_texts,
             'feedback': self.current_feedback,
             'correctness': self.student_correctness,
-            'selection_order': self.selection_order,
+            'input_text_order': self.input_text_order,
         }
         return result
 
@@ -270,7 +271,7 @@ class EmbeddedAnswersXBlock(XBlock):
 
         self.score = 0.0
         self.current_feedback = ''
-        self.selections = {}
+        self.input_texts = {}
         self.student_correctness = {}
 
         self._publish_grade()
@@ -321,9 +322,9 @@ class EmbeddedAnswersXBlock(XBlock):
     def restore_state(self, submissions, suffix=''):
         return {
             'result': 'success',
-            'selections': self.selections,
+            'input_texts': self.input_texts,
             'correctness': self.student_correctness,
-            'selection_order': self.selection_order,
+            'input_text_order': self.input_text_order,
             'current_feedback': self.current_feedback,
             'completed': self.completed,
         }
@@ -397,20 +398,18 @@ class EmbeddedAnswersXBlock(XBlock):
         tree = etree.parse(StringIO(xmlstring))
 
         for input_ref in tree.iter('input_ref'):
+            input_ref.set('type','text')
             for optioninput in tree.iter('optioninput'):
-                select = Element('select')
+                # select = Element('select')
                 valuecorrectness = dict()
                 valuefeedback = dict()
                 if optioninput.attrib['id'] == input_ref.attrib['input']:
-                    newoption = SubElement(input_ref, 'option')
-                    newoption.text = ''
                     for option in optioninput.iter('option'):
-                        newoption = SubElement(input_ref, 'option')
-                        newoption.text = option.text
                         valuecorrectness[option.text] = option.attrib['correct']
+                        input_ref.set('size',str(len(option.text)));
                         for optionhint in option.iter('optionhint'):
                             valuefeedback[option.text] = optionhint.text
-                    input_ref.tag = 'select'
+                    input_ref.tag = 'input'
                     input_ref.attrib['xblock_id'] = unicode(self.scope_ids.usage_id)
                     self.correctness[optioninput.attrib['id']] = valuecorrectness
                     self.feedback[optioninput.attrib['id']] = valuefeedback

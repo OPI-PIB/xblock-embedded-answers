@@ -1,4 +1,5 @@
 README.rst
+setup.py
 embedded_answers/__init__.py
 embedded_answers/embedded_answers.py
 embedded_answers/static/README.txt

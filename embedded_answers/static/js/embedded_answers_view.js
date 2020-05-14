@@ -65,26 +65,26 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
         // reset the prompt to the original value to remove previous decorations
         question_prompt.html(prompt);
         // restore select values
-        restore_selections(result.submissions);
+        restore_input_texts(result.submissions);
 		// add decorations to indicate correctness
-        add_decorations(result.correctness, result.selection_order);
+        add_decorations(result.correctness, result.input_text_order);
 
 	}
 
-	function restore_selections(selections) {
-        $("select").each(function() {
+	function restore_input_texts(input_texts) {
+        $(".question_prompt input").each(function() {
         	if (this.getAttribute('xblock_id') == xblock_id) {
         		// reset the select value to what the student submitted
-        		this.value = selections[this.getAttribute('input')];
+        		this.value = input_texts[this.getAttribute('input')];
         	}
         });
 	}
 
-	function add_decorations(correctness, selection_order) {
-        $("select").each(function() {
+	function add_decorations(correctness, input_text_order) {
+        $(".question_prompt input").each(function() {
         	if (this.getAttribute('xblock_id') == xblock_id) {
 
-        		var decoration_number = selection_order[this.getAttribute('input')];
+        		var decoration_number = input_text_order[this.getAttribute('input')];
 
         		// add new decoration to the select
         		if (correctness[this.getAttribute('input')] == 'True') {
@@ -125,8 +125,8 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
 
 	function restore_state(result) {
 		if (result.completed == true) {
-        	restore_selections(result.selections);
-        	add_decorations(result.correctness, result.selection_order);
+        	restore_input_texts(result.input_texts);
+        	add_decorations(result.correctness, result.input_text_order);
         	show_feedback(result.current_feedback);
         }
 	}
@@ -168,25 +168,27 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
 
     $('.check_button', element).click(function(eventObject) {
         pre_submit();
-        var selections = {};
-        var selection_order = {};
+        var responses = {};
+        var responses_order = {};
         var complete = true;
         var counter = 1;
-        $("select").each(function() {
+        $(".question_prompt input").each(function() {
         	if (this.getAttribute('xblock_id') == xblock_id) {
-        		if (this.selectedIndex == 0) {
+                console.log(this)
+        		if (this.value.length == 0) {
     	    		complete = false;
     	    		show_feedback(`<p class="incorrect">${embedded_answersi18n.gettext('You haven\'t completed the question.')}</p>`);
 	        	}
-        		selections[this.getAttribute('input')] = this[this.selectedIndex].text;
-        		selection_order[this.getAttribute('input')] = counter;
+        		responses[this.getAttribute('input')] = this.value;
+        		responses_order[this.getAttribute('input')] = counter;
         		counter++;
         	}
         });
         var data = {
-                selections: selections,
-                selection_order: selection_order,
+                responses: responses,
+                responses_order: responses_order,
             };
+        console.log(data)
         if (complete) {
 	        $.ajax({
     	        type: 'POST',

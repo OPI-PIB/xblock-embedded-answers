@@ -1,0 +1,206 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2020-04-21 12:48+0200\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"Plural-Forms: nplurals=4; plural=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);\n"
+
+#: embedded_answers.py:35 static/html/embedded_answers_edit.html:8
+msgid "Display Name"
+msgstr "Nazwa"
+
+#: embedded_answers.py:36
+msgid "Embedded Answers"
+msgstr "Pytanie zagnieżdżone z luką"
+
+#: embedded_answers.py:38 static/html/embedded_answers_edit.html:11
+msgid "This name appears in the horizontal navigation at the top of the page"
+msgstr "Ta nazwa pojawia się w nawigacji na górze strony"
+
+#: embedded_answers.py:44
+msgid "Hints for the question"
+msgstr "Podpowiedź do pytania"
+
+#: embedded_answers.py:48
+msgid "Default question content "
+msgstr "Domyśla treść pytania"
+
+#: embedded_answers.py:52
+msgid ""
+"\n"
+"            <embedded_answers schema_version='1'>\n"
+"                <body>\n"
+"                    <p>A fruit is the fertilized ovary of a tree or plant "
+"and contains seeds. Given this, a <input_ref input=\"i1\"/> is consider a "
+"fruit, while a <input_ref input=\"i2\"/> is considered a vegetable.</p>\n"
+"                </body>\n"
+"                <optionresponse>\n"
+"                    <optioninput id=\"i1\">\n"
+"                        <option correct=\"True\">tomato<optionhint>Correct "
+"main response.</optionhint></option>\n"
+"                        <option correct=\"True\">Tomato<optionhint>Correct "
+"alternative response.</optionhint></option>\n"
+"                        <option correct=\"False"
+"\">tomatoo<optionhint>Incorrect response.</optionhint></option>\n"
+"                    </optioninput>\n"
+"                </optionresponse>\n"
+"                <optionresponse>\n"
+"                    <optioninput id=\"i2\">\n"
+"                        <option correct=\"True\">onion<optionhint>The onion "
+"is the bulb of the onion plant and contains no seeds and is therefore a "
+"vegetable.</optionhint></option>\n"
+"                        <option correct=\"True\">Onion<optionhint>Correct "
+"alternative response.</optionhint></option>\n"
+"                    </optioninput>\n"
+"                </optionresponse>\n"
+"                <demandhint>\n"
+"                    <hint>A fruit is the fertilized ovary from a flower.</"
+"hint>\n"
+"                    <hint>A fruit contains seeds of the plant.</hint>\n"
+"                </demandhint>\n"
+"            </embedded_answers>\n"
+"        "
+msgstr ""
+"\n"
+"            <embedded_answers schema_version='1'>\n"
+"                <body>\n"
+"                    <p>Owoce powstają z kwiatów drzew, krzewów i roślin ogrodowych oraz zawierają nasiona. "
+"W związku z tym, <input_ref input=\"i1\"/> jest owocem, a "
+"<input_ref input=\"i2\"/> jest warzywem.</p>\n"
+"                </body>\n"
+"                <optionresponse>\n"
+"                    <optioninput id=\"i1\">\n"
+"                        <option correct=\"True\">pomidor<optionhint>Poprawna "
+"odpowiedź.</optionhint></option>\n"
+"                        <option correct=\"True\">Pomidor<optionhint>Poprawna "
+"alternatywna odpowiedź.</optionhint></option>\n"
+"                        <option correct=\"False"
+"\">pomidoor<optionhint>Niepoprawna odpowiedź.</optionhint></option>\n"
+"                    </optioninput>\n"
+"                </optionresponse>\n"
+"                <optionresponse>\n"
+"                    <optioninput id=\"i2\">\n"
+"                        <option correct=\"True\">cebula<optionhint>Cebula wyrasta "
+"z cebulki, nie zawiera nasion więc jest warzywem. </optionhint></option>\n"
+"                        <option correct=\"True\">Cebula<optionhint>Poprawna "
+"alternatywna odpowiedź.</optionhint></option>\n"
+"                    </optioninput>\n"
+"                </optionresponse>\n"
+"                <demandhint>\n"
+"                    <hint>Owoc zawiera nasiona i powstaje z kwiatu.</"
+"hint>\n"
+"                    <hint>Owoc zawiera nasiona rośliny.</hint>\n"
+"                </demandhint>\n"
+"            </embedded_answers>\n"
+"        "
+
+#: embedded_answers.py:82
+msgid "Correctness of input values"
+msgstr "Poprawność wprowadzonych danych"
+
+#: embedded_answers.py:88
+msgid "Order of selections in body"
+msgstr ""
+
+#: embedded_answers.py:94
+msgid "Saved student input values"
+msgstr ""
+
+#: embedded_answers.py:100
+msgid "Saved student correctness values"
+msgstr ""
+
+#: embedded_answers.py:106
+msgid "Feedback for input values"
+msgstr ""
+
+#: embedded_answers.py:112
+msgid "Current feedback state"
+msgstr ""
+
+#: embedded_answers.py:118
+msgid "Indicates whether the learner has completed the problem at least once"
+msgstr ""
+
+#: embedded_answers.py:124 static/html/embedded_answers_edit.html:16
+msgid "Weight"
+msgstr "Waga"
+
+#: embedded_answers.py:126 static/html/embedded_answers_edit.html:19
+msgid "This assigns an integer value representing the weight of this problem"
+msgstr "Przypisuje liczbę całkowitą reprezentującą wagę tego problemu"
+
+#: embedded_answers.py:202 embedded_answers.py:205
+msgid "Correct"
+msgstr "Dobrze"
+
+#: embedded_answers.py:213 embedded_answers.py:216
+msgid "Incorrect"
+msgstr "Źle"
+
+#: embedded_answers.py:318 embedded_answers.py:322
+msgid "Hint"
+msgstr "Podpowiedź"
+
+#: embedded_answers.py:435
+#, python-brace-format
+msgid "{weight} point possible"
+msgid_plural "{weight} points possible"
+msgstr[0] "{weight} możliwy punkt"
+msgstr[1] "{weight} możliwe punkty"
+msgstr[2] "{weight} możliwe punkty"
+msgstr[3] "{weight} możliwych punktów"
+
+#: embedded_answers.py:444
+#, python-brace-format
+msgid "/{weight} point"
+msgid_plural "/{weight} points"
+msgstr[0] "/{weight} punkt"
+msgstr[1] "/{weight} punkty"
+msgstr[2] "/{weight} punkty"
+msgstr[3] "/{weight} punkty"
+
+#: embedded_answers.py:495
+msgid "Dummy"
+msgstr ""
+
+#: static/html/embedded_answers_edit.html:24
+msgid "Definition"
+msgstr "Definicja"
+
+#: static/html/embedded_answers_edit.html:25
+msgid "The XML definition for the problem"
+msgstr "XML definicja problemu"
+
+#: static/html/embedded_answers_edit.html:37
+msgid "Save"
+msgstr "Zapisz"
+
+#: static/html/embedded_answers_edit.html:40
+msgid "Cancel"
+msgstr "Anuluj"
+
+#: static/html/embedded_answers_view.html:13
+msgid "Check"
+msgstr "Prześlij"
+
+#: static/js/embedded_answers_view.js:54
+msgid "(Loading...)"
+msgstr "(Wczytywanie...)"
+
+#: static/js/embedded_answers_view.js:179
+msgid "You haven't completed the question."
+msgstr "Nie wypełniłeś pytania."

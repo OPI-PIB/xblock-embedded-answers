@@ -9,17 +9,88 @@
   var django = globals.django || (globals.django = {});
 
   
-  django.pluralidx = function (count) { return (count == 1) ? 0 : 1; };
+  django.pluralidx = function (n) {
+    var v=(n==1 ? 0 : (n%10>=2 && n%10<=4) && (n%100<12 || n%100>14) ? 1 : n!=1 && (n%10>=0 && n%10<=1) || (n%10>=5 && n%10<=9) || (n%100>=12 && n%100<=14) ? 2 : 3);
+    if (typeof(v) == 'boolean') {
+      return v ? 1 : 0;
+    } else {
+      return v;
+    }
+  };
   
 
   
-  /* gettext identity library */
+  /* gettext library */
 
-  django.gettext = function (msgid) { return msgid; };
-  django.ngettext = function (singular, plural, count) { return (count == 1) ? singular : plural; };
+  django.catalog = {
+    "\n            <embedded_answers schema_version='1'>\n                <body>\n                    <p>A fruit is the fertilized ovary of a tree or plant and contains seeds. Given this, a <input_ref input=\"i1\"/> is consider a fruit, while a <input_ref input=\"i2\"/> is considered a vegetable.</p>\n                </body>\n                <optionresponse>\n                    <optioninput id=\"i1\">\n                        <option correct=\"True\">tomato<optionhint>Correct main response.</optionhint></option>\n                        <option correct=\"True\">Tomato<optionhint>Correct alternative response.</optionhint></option>\n                        <option correct=\"False\">tomatoo<optionhint>Incorrect response.</optionhint></option>\n                    </optioninput>\n                </optionresponse>\n                <optionresponse>\n                    <optioninput id=\"i2\">\n                        <option correct=\"True\">onion<optionhint>The onion is the bulb of the onion plant and contains no seeds and is therefore a vegetable.</optionhint></option>\n                        <option correct=\"True\">Onion<optionhint>Correct alternative response.</optionhint></option>\n                    </optioninput>\n                </optionresponse>\n                <demandhint>\n                    <hint>A fruit is the fertilized ovary from a flower.</hint>\n                    <hint>A fruit contains seeds of the plant.</hint>\n                </demandhint>\n            </embedded_answers>\n        ": "\n            <embedded_answers schema_version='1'>\n                <body>\n                    <p>Owoce powstaj\u0105 z kwiat\u00f3w drzew, krzew\u00f3w i ro\u015blin ogrodowych oraz zawieraj\u0105 nasiona. W zwi\u0105zku z tym, <input_ref input=\"i1\"/> jest owocem, a <input_ref input=\"i2\"/> jest warzywem.</p>\n                </body>\n                <optionresponse>\n                    <optioninput id=\"i1\">\n                        <option correct=\"True\">pomidor<optionhint>Poprawna odpowied\u017a.</optionhint></option>\n                        <option correct=\"True\">Pomidor<optionhint>Poprawna alternatywna odpowied\u017a.</optionhint></option>\n                        <option correct=\"False\">pomidoor<optionhint>Niepoprawna odpowied\u017a.</optionhint></option>\n                    </optioninput>\n                </optionresponse>\n                <optionresponse>\n                    <optioninput id=\"i2\">\n                        <option correct=\"True\">cebula<optionhint>Cebula wyrasta z cebulki, nie zawiera nasion wi\u0119c jest warzywem. </optionhint></option>\n                        <option correct=\"True\">Cebula<optionhint>Poprawna alternatywna odpowied\u017a.</optionhint></option>\n                    </optioninput>\n                </optionresponse>\n                <demandhint>\n                    <hint>Owoc zawiera nasiona i powstaje z kwiatu.</hint>\n                    <hint>Owoc zawiera nasiona ro\u015bliny.</hint>\n                </demandhint>\n            </embedded_answers>\n        ", 
+    "(Loading...)": "(Wczytywanie...)", 
+    "/{weight} point": [
+      "/{weight} punkt", 
+      "/{weight} punkty", 
+      "/{weight} punkty", 
+      "/{weight} punkty"
+    ], 
+    "Cancel": "Anuluj", 
+    "Check": "Prze\u015blij", 
+    "Correct": "Dobrze", 
+    "Correctness of input values": "Poprawno\u015b\u0107 wprowadzonych danych", 
+    "Default question content ": "Domy\u015bla tre\u015b\u0107 pytania", 
+    "Definition": "Definicja", 
+    "Display Name": "Nazwa", 
+    "Embedded Answers": "Pytanie zagnie\u017cd\u017cone z luk\u0105", 
+    "Hint": "Podpowied\u017a", 
+    "Hints for the question": "Podpowied\u017a do pytania", 
+    "Incorrect": "\u0179le", 
+    "Save": "Zapisz", 
+    "The XML definition for the problem": "XML definicja problemu", 
+    "This assigns an integer value representing the weight of this problem": "Przypisuje liczb\u0119 ca\u0142kowit\u0105 reprezentuj\u0105c\u0105 wag\u0119 tego problemu", 
+    "This name appears in the horizontal navigation at the top of the page": "Ta nazwa pojawia si\u0119 w nawigacji na g\u00f3rze strony", 
+    "Weight": "Waga", 
+    "You haven't completed the question.": "Nie wype\u0142ni\u0142e\u015b pytania.", 
+    "{weight} point possible": [
+      "{weight} mo\u017cliwy punkt", 
+      "{weight} mo\u017cliwe punkty", 
+      "{weight} mo\u017cliwe punkty", 
+      "{weight} mo\u017cliwych punkt\u00f3w"
+    ]
+  };
+
+  django.gettext = function (msgid) {
+    var value = django.catalog[msgid];
+    if (typeof(value) == 'undefined') {
+      return msgid;
+    } else {
+      return (typeof(value) == 'string') ? value : value[0];
+    }
+  };
+
+  django.ngettext = function (singular, plural, count) {
+    var value = django.catalog[singular];
+    if (typeof(value) == 'undefined') {
+      return (count == 1) ? singular : plural;
+    } else {
+      return value[django.pluralidx(count)];
+    }
+  };
+
   django.gettext_noop = function (msgid) { return msgid; };
-  django.pgettext = function (context, msgid) { return msgid; };
-  django.npgettext = function (context, singular, plural, count) { return (count == 1) ? singular : plural; };
+
+  django.pgettext = function (context, msgid) {
+    var value = django.gettext(context + '\x04' + msgid);
+    if (value.indexOf('\x04') != -1) {
+      value = msgid;
+    }
+    return value;
+  };
+
+  django.npgettext = function (context, singular, plural, count) {
+    var value = django.ngettext(context + '\x04' + singular, context + '\x04' + plural, count);
+    if (value.indexOf('\x04') != -1) {
+      value = django.ngettext(singular, plural, count);
+    }
+    return value;
+  };
   
 
   django.interpolate = function (fmt, obj, named) {
