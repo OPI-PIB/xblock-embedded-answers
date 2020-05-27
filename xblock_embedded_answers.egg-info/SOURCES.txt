@@ -4,10 +4,12 @@ embedded_answers/__init__.py
 embedded_answers/embedded_answers.py
 embedded_answers/static/README.txt
 embedded_answers/static/css/embedded_answers.css
+embedded_answers/static/css/embedded_answers_edit.css
 embedded_answers/static/html/embedded_answers_edit.html
 embedded_answers/static/html/embedded_answers_view.html
 embedded_answers/static/js/embedded_answers_edit.js
 embedded_answers/static/js/embedded_answers_view.js
+embedded_answers/static/js/template_edit.js
 embedded_answers/static/js/translations/en/text.js
 embedded_answers/static/js/translations/pl/text.js
 xblock_embedded_answers.egg-info/PKG-INFO

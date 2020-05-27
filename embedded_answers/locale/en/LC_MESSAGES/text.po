@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-04-30 00:16+0000\n"
+"POT-Creation-Date: 2020-05-27 13:50+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -18,7 +18,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
-#: embedded_answers.py:37 static/htmlembedded_answersrs_edit.html:8
+#: embedded_answers.py:37 static/html/embedded_answers_edit.html:7
 msgid "Display Name"
 msgstr ""
 
@@ -26,7 +26,7 @@ msgstr ""
 msgid "Embedded Answers"
 msgstr ""
 
-#: embedded_answers.py:40 static/htmlembedded_answersrs_edit.html:11
+#: embedded_answers.py:40 static/html/embedded_answers_edit.html:10
 msgid "This name appears in the horizontal navigation at the top of the page"
 msgstr ""
 
@@ -43,33 +43,32 @@ msgid ""
 "\n"
 "            <embedded_answers schema_version='1'>\n"
 "                <body>\n"
-"                    <p>A fruit is the fertilized ovary of a tree or plant "
-"and contains seeds. Given this, a <input_ref input=\"i1\"/> is consider a "
-"fruit, while a <input_ref input=\"i2\"/> is considered a vegetable.</p>\n"
+"                    <p>Enter the problem here. In square brackets put "
+"<input_ref input=\"i1\"/>, which you want to <input_ref input=\"i2\"/> to "
+"the problem.</p>\n"
 "                </body>\n"
 "                <optionresponse>\n"
 "                    <optioninput id=\"i1\">\n"
-"                        <option correct=\"True\">tomato<optionhint>Correct "
-"main response.</optionhint></option>\n"
-"                        <option correct=\"True\">Tomato<optionhint>Correct "
-"alternative response.</optionhint></option>\n"
-"                        <option correct=\"False"
-"\">tomatoo<optionhint>Incorrect response.</optionhint></option>\n"
+"                        <option correct=\"True\">a word or and "
+"expression<optionhint>A text which will appear after giving a correct answer."
+"</optionhint></option>\n"
+"                        <option correct=\"True\">Alternative "
+"response<optionhint>A text which will appear after giving a correct "
+"alternative answer.</optionhint></option>\n"
 "                    </optioninput>\n"
 "                </optionresponse>\n"
 "                <optionresponse>\n"
 "                    <optioninput id=\"i2\">\n"
-"                        <option correct=\"True\">onion<optionhint>The onion "
-"is the bulb of the onion plant and contains no seeds and is therefore a "
-"vegetable.</optionhint></option>\n"
-"                        <option correct=\"True\">Onion<optionhint>Correct "
-"alternative response.</optionhint></option>\n"
+"                        <option correct=\"True\">add<optionhint>A text which "
+"will appear after giving a correct answer.</optionhint></option>\n"
+"                        <option correct=\"True\">Alternative "
+"response<optionhint>A text which will appear after giving a correct "
+"alternative answer.</optionhint></option>\n"
 "                    </optioninput>\n"
 "                </optionresponse>\n"
 "                <demandhint>\n"
-"                    <hint>A fruit is the fertilized ovary from a flower.</"
-"hint>\n"
-"                    <hint>A fruit contains seeds of the plant.</hint>\n"
+"                    <hint>Hint 1</hint>\n"
+"                    <hint>Hint 2</hint>\n"
 "                </demandhint>\n"
 "            </embedded_answers>\n"
 "        "
@@ -80,7 +79,7 @@ msgid "Correctness of input values"
 msgstr ""
 
 #: embedded_answers.py:90
-msgid "Order of selections in body"
+msgid "Order of input_texts in body"
 msgstr ""
 
 #: embedded_answers.py:96
@@ -103,58 +102,88 @@ msgstr ""
 msgid "Indicates whether the learner has completed the problem at least once"
 msgstr ""
 
-#: embedded_answers.py:126 static/htmlembedded_answersrs_edit.html:16
+#: embedded_answers.py:126 static/html/embedded_answers_edit.html:14
 msgid "Weight"
 msgstr ""
 
-#: embedded_answers.py:128 static/htmlembedded_answersrs_edit.html:19
+#: embedded_answers.py:128 static/html/embedded_answers_edit.html:17
 msgid "This assigns an integer value representing the weight of this problem"
 msgstr ""
 
-#: embedded_answers.py:215embedded_answersrs.py:218
+#: embedded_answers.py:224embedded_answersrs.py:227
 msgid "Correct"
 msgstr ""
 
-#: embedded_answers.py:226embedded_answersrs.py:229
+#: embedded_answers.py:235embedded_answersrs.py:238
 msgid "Incorrect"
 msgstr ""
 
-#: embedded_answers.py:331embedded_answersrs.py:335
+#: embedded_answers.py:341 embedded_answers.py:345
 #: static/html/embedded_answers_view.html:19
 msgid "Hint"
 msgstr ""
 
-#: embedded_answers.py:435
+#: embedded_answers.py:536
+msgid "Dummy"
+msgstr ""
+
+#: embedded_answers.py:440
 #, python-brace-format
 msgid "{weight} point possible"
 msgid_plural "{weight} points possible"
 msgstr[0] ""
 msgstr[1] ""
 
-#: embedded_answers.py:444
+#: embedded_answers.py:449
 #, python-brace-format
 msgid "/{weight} point"
 msgid_plural "/{weight} points"
 msgstr[0] ""
 msgstr[1] ""
 
-#: embedded_answers.py:517
-msgid "Dummy"
-msgstr ""
-
 #: static/html/embedded_answers_edit.html:24
-msgid "Definition"
+msgid "Problem"
 msgstr ""
 
 #: static/html/embedded_answers_edit.html:25
+msgid "Switch to XML editor view"
+msgstr ""
+
+#: static/html/embedded_answers_edit.html:27
+msgid ""
+"Enter a problem here. In square brackets [] enter the words, which will be "
+"changed into gaps."
+msgstr ""
+
+#: static/html/embedded_answers_edit.html:36
+msgid "Beneath there is a list of hints. You can modify, add and delete them."
+msgstr ""
+
+#: static/html/embedded_answers_edit.html:39
+msgid "Hints"
+msgstr ""
+
+#: static/html/embedded_answers_edit.html:44
+msgid "Add a hint"
+msgstr ""
+
+#: static/html/embedded_answers_edit.html:54
+msgid "Definition"
+msgstr ""
+
+#: static/html/embedded_answers_edit.html:55
+msgid "Switch to Visual editor view"
+msgstr ""
+
+#: static/html/embedded_answers_edit.html:57
 msgid "The XML definition for the problem"
 msgstr ""
 
-#: static/html/embedded_answers_edit.html:37
+#: static/html/embedded_answers_edit.html:72
 msgid "Save"
 msgstr ""
 
-#: static/html/embedded_answers_edit.html:40
+#: static/html/embedded_answers_edit.html:75
 msgid "Cancel"
 msgstr ""
 
@@ -166,10 +195,50 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
+#: static/js/embedded_answers_edit.js:213
+msgid "A text which will appear after giving a correct answer"
+msgstr ""
+
+#: static/js/embedded_answers_edit.js:283
+msgid "Alternative reponse"
+msgstr ""
+
+#: static/js/embedded_answers_edit.js:284
+msgid "A text which will appear after giving a correct alternative answer"
+msgstr ""
+
 #: static/js/embedded_answers_view.js:54
 msgid "(Loading...)"
 msgstr ""
 
-#: static/js/embedded_answers_view.js:179
+#: static/js/embedded_answers_view.js:180
 msgid "You haven't completed the question."
+msgstr ""
+
+#: static/js/template_edit.js:2
+msgid ""
+"Beneath you have a list of words extracted from the square brackets []. You "
+"can add feedback message which will appear after giving the correct answer. "
+"You may also add alternative responses which will also be accepted (e.g. "
+"café cafe)"
+msgstr ""
+
+#: static/js/template_edit.js:3
+msgid "Feedback"
+msgstr ""
+
+#: static/js/template_edit.js:4
+msgid "Add alternative response"
+msgstr ""
+
+#: static/js/template_edit.js:5
+msgid "Alternative responses"
+msgstr ""
+
+#: static/js/template_edit.js:6
+msgid "Tagged word: "
+msgstr ""
+
+#: static/js/template_edit.js:30
+msgid "Delete"
 msgstr ""

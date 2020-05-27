@@ -52,24 +52,23 @@ class EmbeddedAnswersXBlock(XBlock):
         default=_('''
             <embedded_answers schema_version='1'>
                 <body>
-                    <p>A fruit is the fertilized ovary of a tree or plant and contains seeds. Given this, a <input_ref input="i1"/> is consider a fruit, while a <input_ref input="i2"/> is considered a vegetable.</p>
+                    <p>Enter the problem here. In square brackets put <input_ref input="i1"/>, which you want to <input_ref input="i2"/> to the problem.</p>
                 </body>
                 <optionresponse>
                     <optioninput id="i1">
-                        <option correct="True">tomato<optionhint>Correct main response.</optionhint></option>
-                        <option correct="True">Tomato<optionhint>Correct alternative response.</optionhint></option>
-                        <option correct="False">tomatoo<optionhint>Incorrect response.</optionhint></option>
+                        <option correct="True">a word or and expression<optionhint>A text which will appear after giving a correct answer.</optionhint></option>
+                        <option correct="True">Alternative response<optionhint>A text which will appear after giving a correct alternative answer.</optionhint></option>
                     </optioninput>
                 </optionresponse>
                 <optionresponse>
                     <optioninput id="i2">
-                        <option correct="True">onion<optionhint>The onion is the bulb of the onion plant and contains no seeds and is therefore a vegetable.</optionhint></option>
-                        <option correct="True">Onion<optionhint>Correct alternative response.</optionhint></option>
+                        <option correct="True">add<optionhint>A text which will appear after giving a correct answer.</optionhint></option>
+                        <option correct="True">Alternative response<optionhint>A text which will appear after giving a correct alternative answer.</optionhint></option>
                     </optioninput>
                 </optionresponse>
                 <demandhint>
-                    <hint>A fruit is the fertilized ovary from a flower.</hint>
-                    <hint>A fruit contains seeds of the plant.</hint>
+                    <hint>Hint 1</hint>
+                    <hint>Hint 2</hint>
                 </demandhint>
             </embedded_answers>
         '''),
@@ -188,7 +187,8 @@ class EmbeddedAnswersXBlock(XBlock):
             context = ctx,
             i18n_service=self.runtime.service(self, "i18n"),
         ))
-
+        frag.add_css(loader.load_unicode('static/css/embedded_answers_edit.css'))
+        frag.add_javascript(loader.load_unicode('static/js/template_edit.js'))
         frag.add_javascript(loader.load_unicode('static/js/embedded_answers_edit.js'))
         frag.initialize_js('EmbeddedAnswersXBlockInitEdit')
         return frag
@@ -221,10 +221,10 @@ class EmbeddedAnswersXBlock(XBlock):
             selected_text = self.input_texts[key]
 
             if self.correctness.get(key,dict()).get(selected_text,'False').lower() in ('true',):
-                default_feedback = '<p class="correct"><strong>(' + str(pos) + ') ' + i18n_('Correct') + '</strong></p>'
+                default_feedback = '<p class="correct"><strong>(' + str(pos) + ') ' + i18n_(_('Correct')) + '</strong></p>'
                 if selected_text in self.feedback[key]:
                     if self.feedback[key][selected_text] is not None:
-                        self.current_feedback += '<p class="correct"><strong>(' + str(pos) + ') ' + i18n_('Correct') + ': </strong>' + self.feedback[key][selected_text] + '</p>'
+                        self.current_feedback += '<p class="correct"><strong>(' + str(pos) + ') ' + i18n_(_('Correct')) + ': </strong>' + self.feedback[key][selected_text] + '</p>'
                     else:
                         self.current_feedback += default_feedback
                 else:
@@ -232,10 +232,10 @@ class EmbeddedAnswersXBlock(XBlock):
                 self.student_correctness[key] = 'True'
                 correct_count += 1
             else:
-                default_feedback = '<p class="incorrect"><strong>(' + str(pos) + ') ' + i18n_('Incorrect') + '</strong></p>'
+                default_feedback = '<p class="incorrect"><strong>(' + str(pos) + ') ' + i18n_(_('Incorrect')) + '</strong></p>'
                 if selected_text in self.feedback[key]:
                     if self.feedback[key][selected_text] is not None:
-                        self.current_feedback += '<p class="incorrect"><strong>(' + str(pos) + ') ' + i18n_('Incorrect') + ': </strong>' + self.feedback[key][selected_text] + '</p>'
+                        self.current_feedback += '<p class="incorrect"><strong>(' + str(pos) + ') ' + i18n_(_('Incorrect')) + ': </strong>' + self.feedback[key][selected_text] + '</p>'
                     else:
                         self.current_feedback += default_feedback
                 else:
@@ -445,15 +445,15 @@ class EmbeddedAnswersXBlock(XBlock):
                 weight=self.weight
             )
         else:
-            score_string = '{0:g}'.format(self.score)
+            score_string = '{0:.3f}'.format(self.score)
             result = score_string + i18n_(
                 "/{weight} point",
                 "/{weight} points",
-                int(score_string),
+                self.weight,
             ).format(
                 weight=self.weight
             )
-        return result
+        # return result
 
     def _publish_grade(self):
         self.runtime.publish(
