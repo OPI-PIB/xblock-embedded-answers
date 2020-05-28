@@ -174,7 +174,6 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
         var counter = 1;
         $(".question_prompt input").each(function() {
         	if (this.getAttribute('xblock_id') == xblock_id) {
-                console.log(this)
         		if (this.value.length == 0) {
     	    		complete = false;
     	    		show_feedback(`<p class="incorrect">${embedded_answersi18n.gettext('You haven\'t completed the question.')}</p>`);
@@ -188,7 +187,6 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
                 responses: responses,
                 responses_order: responses_order,
             };
-        console.log(data)
         if (complete) {
 	        $.ajax({
     	        type: 'POST',

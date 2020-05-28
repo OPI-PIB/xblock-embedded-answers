@@ -445,7 +445,7 @@ class EmbeddedAnswersXBlock(XBlock):
                 weight=self.weight
             )
         else:
-            score_string = '{0:.3f}'.format(self.score)
+            score_string = '{0:.1f}'.format(self.score)
             result = score_string + i18n_(
                 "/{weight} point",
                 "/{weight} points",
@@ -453,7 +453,7 @@ class EmbeddedAnswersXBlock(XBlock):
             ).format(
                 weight=self.weight
             )
-        # return result
+        return result
 
     def _publish_grade(self):
         self.runtime.publish(
