@@ -1,3 +1,0 @@
-[xblock.v1]
-embedded_answers = embedded_answers:EmbeddedAnswersXBlock
-
