@@ -33,9 +33,9 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
 
   this.getTemplates = () => {
     // this elements: questionBodyTemplate, questionAlternativeTemplate, demandHintTemplate are previously imported in embedded_answers.py. there are assigns to this.variables
-    this.questionBodyTemplate = questionBodyTemplate;
-    this.questionAlternativeTemplate = questionAlternativeTemplate;
-    this.demandHintTemplate = demandHintTemplate;
+    this.questionBodyTemplate = embeddedAnswersQuestionBodyTemplate;
+    this.questionAlternativeTemplate = embeddedAnswersQuestionAlternativeTemplate;
+    this.demandHintTemplate = embeddedAnswersDemandHintTemplate;
   };
 
   this.initEvents = () => {
