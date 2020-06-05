@@ -5,6 +5,7 @@
 #
 # Translators:
 # krystianlygas <krystian.lygas@gmail.com>, 2020
+# Emilia Dolega <emilia.dolega@opi.org.pl>, 2020
 #
 #, fuzzy
 msgid ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2020-05-27 13:50+0200\n"
 "PO-Revision-Date: 2020-05-27 11:56+0000\n"
-"Last-Translator: krystianlygas <krystian.lygas@gmail.com>, 2020\n"
+"Last-Translator: Emilia Dolega <emilia.dolega@opi.org.pl>, 2020\n"
 "Language-Team: Polish (https://www.transifex.com/navoica/teams/104253/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -98,27 +99,27 @@ msgstr "Poprawność wprowadzonych danych"
 
 #: embedded_answers.py:90
 msgid "Order of input_texts in body"
-msgstr ""
+msgstr "Kolejność opcji w treści"
 
 #: embedded_answers.py:96
 msgid "Saved student input values"
-msgstr ""
+msgstr "Zapisane wartości wejściowe studenta"
 
 #: embedded_answers.py:102
 msgid "Saved student correctness values"
-msgstr ""
+msgstr "Zapisane poprawne wyniki studenta"
 
 #: embedded_answers.py:108
 msgid "Feedback for input values"
-msgstr ""
+msgstr "Informacja zwrotna dla wartości wejściowych"
 
 #: embedded_answers.py:114
 msgid "Current feedback state"
-msgstr ""
+msgstr "Aktualny stan informacji zwrotnej"
 
 #: embedded_answers.py:120
 msgid "Indicates whether the learner has completed the problem at least once"
-msgstr ""
+msgstr "Wskazuje, czy student przynajmniej raz podszedł do ćwiczenia. "
 
 #: embedded_answers.py:126 static/html/embedded_answers_edit.html:14
 msgid "Weight"
@@ -128,18 +129,22 @@ msgstr "Waga"
 msgid "This assigns an integer value representing the weight of this problem"
 msgstr "Przypisuje liczbę całkowitą reprezentującą wagę tego problemu"
 
-#: embedded_answers.py:224embedded_answersrs.py:227
+#: embedded_answers.py:221 embedded_answers.py:224
 msgid "Correct"
 msgstr "Poprawnie"
 
-#: embedded_answers.py:235embedded_answersrs.py:238
+#: embedded_answers.py:232 embedded_answers.py:235
 msgid "Incorrect"
-msgstr "Niepoprawnie"
+msgstr "Błędnie"
 
 #: embedded_answers.py:341 embedded_answers.py:345
 #: static/html/embedded_answers_view.html:19
 msgid "Hint"
 msgstr "Podpowiedź"
+
+#: embedded_answers.py:536
+msgid "Dummy"
+msgstr "Lorem ipsum"
 
 #: embedded_answers.py:440
 #, python-brace-format
@@ -158,10 +163,6 @@ msgstr[0] "/{weight} punkt"
 msgstr[1] "/{weight} punkty"
 msgstr[2] "/{weight} punkty"
 msgstr[3] "/{weight} punkty"
-
-#: embedded_answers.py:536
-msgid "Dummy"
-msgstr ""
 
 #: static/html/embedded_answers_edit.html:24
 msgid "Problem"
@@ -182,7 +183,7 @@ msgstr ""
 #: static/html/embedded_answers_edit.html:36
 msgid "Beneath there is a list of hints. You can modify, add and delete them."
 msgstr ""
-"Pod spodem znajduje się lista podpowiedzi. Możesz je modyfikować, dodawać i "
+"Pod spodem znajduje się lista podpowiedzi. Możesz je dodawać, modyfikować i "
 "usuwać."
 
 #: static/html/embedded_answers_edit.html:39

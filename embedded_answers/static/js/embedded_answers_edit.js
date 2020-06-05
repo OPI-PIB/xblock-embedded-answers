@@ -239,8 +239,7 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
     } else { // code for Mozilla, Firefox, Opera, etc.
       xmlString = (new XMLSerializer()).serializeToString(xmlData);
     }
-    return xmlString;
-    // return xmlString.trim().replace(/(^[ \t]*\n)/gm, '');
+    return xmlString.trim().replace(/(^[ \t]*\n)/gm, '');
   };
 
   this.updateXmlEditor = (data, refresh = true) => {
