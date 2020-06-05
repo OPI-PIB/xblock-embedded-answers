@@ -126,7 +126,7 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
       this.mainContainer.append(bodyContainer);
     });
 
-    this.questionInput.text(copyXMLBody.text());
+    this.questionInput.val(copyXMLBody.text());
 
     this.$xml.find('demandhint hint').each((hintIndex, hint) => {
       const htmlDemandHint = $.parseHTML(self.demandHintTemplate);
@@ -142,9 +142,8 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
 
   this.textareaToXML = (rawText) => {
     // Regex function for finding elements with [] and variable without []
-    const regexWithoutBrackets = /(?<=\[).+?(?=\])/g;
     const regexWithBrackets = /\[(.*?)\]/g;
-    const regexMatches = rawText.match(regexWithoutBrackets);
+    const regexMatches = this.removeSquareBrackets(rawText.match(regexWithBrackets));
     // Remove optionresponse from xml, when you removed from visual editor
     if (regexMatches === null) {
       self.$xml.find('optionresponse').remove();
@@ -188,22 +187,21 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
     const xmlDoc = new DOMParser().parseFromString(sourceXml, 'application/xml');
     const xsltDoc = new DOMParser().parseFromString([
       // describes how we want to modify the XML - indent everything
-      '<xsl:stylesheet xmlns:xsl="http://www.w3.org/1999/XSL/Transform">',
-      '  <xsl:strip-space elements="*"/>',
-      '  <xsl:template match="para[content-style][not(text())]">', // change to just text() to strip space in text nodes
-      '    <xsl:value-of select="normalize-space(.)"/>',
-      '  </xsl:template>',
-      '  <xsl:template match="node()|@*">',
-      '    <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>',
-      '  </xsl:template>',
-      '  <xsl:output indent="yes"/>',
-      '</xsl:stylesheet>',
-    ].join('\n'), 'application/xml');
+      `<xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
+      <xsl:strip-space elements="*"/>
+      <xsl:template match="para[content-style][not(text())]">
+      <xsl:value-of select="normalize-space(.)"/>
+      </xsl:template>
+      <xsl:template match="node()|@*">
+      <xsl:copy><xsl:apply-templates select="node()|@*"/></xsl:copy>
+      </xsl:template>
+      <xsl:output indent="yes" omit-xml-declaration="yes"/>
+      </xsl:stylesheet>`,].join('\n'), 'application/xml');
 
-    const xsltProcessor = new XSLTProcessor();
+    var xsltProcessor = new XSLTProcessor();
     xsltProcessor.importStylesheet(xsltDoc);
-    const resultDoc = xsltProcessor.transformToDocument(xmlDoc);
-    const resultXml = new XMLSerializer().serializeToString(resultDoc);
+    var resultDoc = xsltProcessor.transformToDocument(xmlDoc);
+    var resultXml = new XMLSerializer().serializeToString(resultDoc);
     return resultXml;
   };
 
@@ -241,11 +239,18 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
     } else { // code for Mozilla, Firefox, Opera, etc.
       xmlString = (new XMLSerializer()).serializeToString(xmlData);
     }
-    return xmlString.trim().replace(/(^[ \t]*\n)/gm, '');
+    return xmlString;
+    // return xmlString.trim().replace(/(^[ \t]*\n)/gm, '');
   };
 
   this.updateXmlEditor = (data, refresh = true) => {
-    this.xmlEditor.setValue(this.prettifyXml(this.getXmlString(data)));
+    // if browser is Chrome use XLS to prettifyXML.
+    if (/Chrome/.test(navigator.userAgent)){
+        this.xmlEditor.setValue(this.prettifyXml(this.getXmlString(data)));
+    }
+    else {
+        this.xmlEditor.setValue(this.getXmlString(data));
+    }
     if (refresh) {
       this.refreshView();
     }
@@ -320,6 +325,14 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
     self.updateXmlEditor(self.$xml.get(0), false);
   };
 
+  this.removeSquareBrackets = function(arrayElements){
+    let result = []
+    $(arrayElements).each(function(index,element){
+      result.push(element.replace(/\[|\]/g,''));
+    });
+    return result;
+  };
+
   this.onCancel = function () {
     self.restoreDefaultEditorHeight();
     runtime.notify('cancel', {});
@@ -365,4 +378,5 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
 
   this.init();
   this.renderView();
+
 }
