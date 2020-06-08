@@ -150,7 +150,6 @@ class EmbeddedAnswersXBlock(XBlock):
         self.init_emulation()
         frag = Fragment()
         attributes = ''
-        i18n_ = self.runtime.service(self, "i18n").ugettext
         ctx = {
             'display_name': self.display_name,
             'problem_progress': self._get_problem_progress(),
@@ -215,16 +214,16 @@ class EmbeddedAnswersXBlock(XBlock):
         self.current_feedback = ''
 
         correct_count = 0
-        i18n_ = self.runtime.service(self, "i18n").ugettext
+        _ = self.runtime.service(self, "i18n").ugettext
         # use sorted input_text_order to iterate through input_texts dict
         for key,pos in sorted(self.input_text_order.iteritems(), key=lambda (k,v): (v,k)):
             selected_text = self.input_texts[key]
 
             if self.correctness.get(key,dict()).get(selected_text,'False').lower() in ('true',):
-                default_feedback = '<p class="correct"><strong>(' + str(pos) + ') ' + i18n_(_('Correct')) + '</strong></p>'
+                default_feedback = '<p class="correct"><strong>(' + str(pos) + ') ' + _('Correct') + '</strong></p>'
                 if selected_text in self.feedback[key]:
                     if self.feedback[key][selected_text] is not None:
-                        self.current_feedback += '<p class="correct"><strong>(' + str(pos) + ') ' + i18n_(_('Correct')) + ': </strong>' + self.feedback[key][selected_text] + '</p>'
+                        self.current_feedback += '<p class="correct"><strong>(' + str(pos) + ') ' + _('Correct') + ': </strong>' + self.feedback[key][selected_text] + '</p>'
                     else:
                         self.current_feedback += default_feedback
                 else:
@@ -232,10 +231,10 @@ class EmbeddedAnswersXBlock(XBlock):
                 self.student_correctness[key] = 'True'
                 correct_count += 1
             else:
-                default_feedback = '<p class="incorrect"><strong>(' + str(pos) + ') ' + i18n_(_('Incorrect')) + '</strong></p>'
+                default_feedback = '<p class="incorrect"><strong>(' + str(pos) + ') ' + _('Incorrect') + '</strong></p>'
                 if selected_text in self.feedback[key]:
                     if self.feedback[key][selected_text] is not None:
-                        self.current_feedback += '<p class="incorrect"><strong>(' + str(pos) + ') ' + i18n_(_('Incorrect')) + ': </strong>' + self.feedback[key][selected_text] + '</p>'
+                        self.current_feedback += '<p class="incorrect"><strong>(' + str(pos) + ') ' + _('Incorrect') + ': </strong>' + self.feedback[key][selected_text] + '</p>'
                     else:
                         self.current_feedback += default_feedback
                 else:
@@ -331,18 +330,18 @@ class EmbeddedAnswersXBlock(XBlock):
 
     @XBlock.json_handler
     def send_hints(self, submissions, suffix=''):
-        i18n_ = self.runtime.service(self, "i18n").ugettext
-        tree = etree.parse(StringIO(i18n_(self.question_string)))
+        _ = self.runtime.service(self, "i18n").ugettext
+        tree = etree.parse(StringIO(_(self.question_string)))
         raw_hints = tree.xpath('/embedded_answers/demandhint/hint')
 
         decorated_hints = list()
 
         if len(raw_hints) == 1:
-            hint = i18n_(_('Hint')) + ': ' + etree.tostring(raw_hints[0], encoding='unicode')
+            hint = _('Hint') + ': ' + etree.tostring(raw_hints[0], encoding='unicode')
             decorated_hints.append(hint)
         else:
             for i in range(len(raw_hints)):
-                hint = i18n_(_('Hint')) + ' ({number} / {total}): {hint}'.format(
+                hint = _('Hint') + ' ({number} / {total}): {hint}'.format(
                     number=i + 1,
                     total=len(raw_hints),
                     hint=etree.tostring(raw_hints[i], encoding='unicode'))
@@ -434,10 +433,10 @@ class EmbeddedAnswersXBlock(XBlock):
         Returns a statement of progress for the XBlock, which depends
         on the user's current score
         """
-        i18n_ = self.runtime.service(self, "i18n").ungettext
+        ungettext = self.runtime.service(self, "i18n").ungettext
         result = ''
         if self.score == 0.0:
-            result = i18n_(
+            result = ungettext(
                 '{weight} point possible',
                 '{weight} points possible',
                 self.weight,
@@ -446,7 +445,7 @@ class EmbeddedAnswersXBlock(XBlock):
             )
         else:
             score_string = '{0:.1f}'.format(self.score)
-            result = score_string + i18n_(
+            result = score_string + ungettext(
                 "/{weight} point",
                 "/{weight} points",
                 self.weight,
@@ -488,10 +487,10 @@ class EmbeddedAnswersXBlock(XBlock):
         Emulation of init function, for translation purpose.
         """
         if not self.skip_flag:
-            i18n_ = self.runtime.service(self, "i18n").ugettext
+            _ = self.runtime.service(self, "i18n").ugettext
             #     self.display_name = _(self.display_name)
-            self.fields['display_name']._default = i18n_(self.fields['display_name']._default)
-            self.fields['question_string']._default = i18n_(self.fields['question_string']._default)
+            self.fields['display_name']._default = _(self.fields['display_name']._default)
+            self.fields['question_string']._default = _(self.fields['question_string']._default)
             self.skip_flag = True
 
     @staticmethod
