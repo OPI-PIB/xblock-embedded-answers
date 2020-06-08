@@ -217,7 +217,7 @@ class EmbeddedAnswersXBlock(XBlock):
         _ = self.runtime.service(self, "i18n").ugettext
         # use sorted input_text_order to iterate through input_texts dict
         for key,pos in sorted(self.input_text_order.iteritems(), key=lambda (k,v): (v,k)):
-            selected_text = self.input_texts[key]
+            selected_text = self.input_texts[key].lower()
 
             if self.correctness.get(key,dict()).get(selected_text,'False').lower() in ('true',):
                 default_feedback = '<p class="correct"><strong>(' + str(pos) + ') ' + _('Correct') + '</strong></p>'
@@ -404,10 +404,10 @@ class EmbeddedAnswersXBlock(XBlock):
                 valuefeedback = dict()
                 if optioninput.attrib['id'] == input_ref.attrib['input']:
                     for option in optioninput.iter('option'):
-                        valuecorrectness[option.text] = option.attrib['correct']
+                        valuecorrectness[option.text.lower()] = option.attrib['correct']
                         input_ref.set('size',str(len(option.text)));
                         for optionhint in option.iter('optionhint'):
-                            valuefeedback[option.text] = optionhint.text
+                            valuefeedback[option.text.lower()] = optionhint.text
                     input_ref.tag = 'input'
                     input_ref.attrib['xblock_id'] = unicode(self.scope_ids.usage_id)
                     self.correctness[optioninput.attrib['id']] = valuecorrectness
