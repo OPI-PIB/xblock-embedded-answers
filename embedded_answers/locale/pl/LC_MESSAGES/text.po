@@ -2,17 +2,17 @@
 # Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 # Translators:
 # krystianlygas <krystian.lygas@gmail.com>, 2020
 # Emilia Dolega <emilia.dolega@opi.org.pl>, 2020
-#
+# 
 #, fuzzy
 msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-27 13:50+0200\n"
+"POT-Creation-Date: 2020-06-08 09:07+0200\n"
 "PO-Revision-Date: 2020-05-27 11:56+0000\n"
 "Last-Translator: Emilia Dolega <emilia.dolega@opi.org.pl>, 2020\n"
 "Language-Team: Polish (https://www.transifex.com/navoica/teams/104253/pl/)\n"
@@ -48,23 +48,23 @@ msgid ""
 "\n"
 "            <embedded_answers schema_version='1'>\n"
 "                <body>\n"
-"                    <p>Enter the problem here. In square brackets put <input_ref input=\"i1\"/>, which you want to <input_ref input=\"i2\"/> to the problem.</p>\n"
+"                    <p>The highest mountain on Earth is <input_ref input=\"i1\"/>, and the highest mountain in Poland is <input_ref input=\"i2\"/>.</p>\n"
 "                </body>\n"
 "                <optionresponse>\n"
 "                    <optioninput id=\"i1\">\n"
-"                        <option correct=\"True\">a word or and expression<optionhint>A text which will appear after giving a correct answer.</optionhint></option>\n"
-"                        <option correct=\"True\">Alternative response<optionhint>A text which will appear after giving a correct alternative answer.</optionhint></option>\n"
+"                        <option correct=\"True\">Mount Everest<optionhint>you are right!</optionhint></option>\n"
+"                        <option correct=\"True\">mount everest<optionhint>you are right!</optionhint></option>\n"
 "                    </optioninput>\n"
 "                </optionresponse>\n"
 "                <optionresponse>\n"
 "                    <optioninput id=\"i2\">\n"
-"                        <option correct=\"True\">add<optionhint>A text which will appear after giving a correct answer.</optionhint></option>\n"
-"                        <option correct=\"True\">Alternative response<optionhint>A text which will appear after giving a correct alternative answer.</optionhint></option>\n"
+"                        <option correct=\"True\">Rysy<optionhint>you are right!</optionhint></option>\n"
+"                        <option correct=\"True\">rysy<optionhint>you are right!</optionhint></option>\n"
 "                    </optioninput>\n"
 "                </optionresponse>\n"
 "                <demandhint>\n"
-"                    <hint>Hint 1</hint>\n"
-"                    <hint>Hint 2</hint>\n"
+"                    <hint>The highest peak on Earth is also called Chomolungma. Its current official elevation is 8,848 m above sea level.</hint>\n"
+"                    <hint>The highest Polish peak is located in the Tatra Mountains on the Polish-Slovak border. Its summit is at 2,499 m above sea level.</hint>\n"
 "                </demandhint>\n"
 "            </embedded_answers>\n"
 "        "
@@ -72,23 +72,23 @@ msgstr ""
 "\n"
 "            <embedded_answers schema_version='1'>\n"
 "                <body>\n"
-"                    <p>Tutaj wpisz treść ćwiczenia. Nawiasami kwadratowymi wyodrębnij <input_ref input=\"i1\"/>, który chcesz <input_ref input=\"i2\"/> w ćwiczeniu.</p>\n"
+"                    <p>Najwyższym szczytem górskim na świecie jest <input_ref input=\"i1\"/>, a najwyższym szczytem w Polsce są <input_ref input=\"i2\"/>.</p>\n"
 "                </body>\n"
 "                <optionresponse>\n"
 "                    <optioninput id=\"i1\">\n"
-"                        <option correct=\"True\">słowo lub wyrażenie<optionhint>Tekst który wyświetli się po udzieleniu poprawnej odpowiedzi.</optionhint></option>\n"
-"                        <option correct=\"True\">Odpowiedź alternatywna<optionhint>Tekst który wyświetli się po udzieleniu poprawnej odpowiedzi.</optionhint></option>\n"
+"                        <option correct=\"True\">Mount Everest<optionhint>masz rację!</optionhint></option>\n"
+"                        <option correct=\"True\">mount everest<optionhint>masz rację!</optionhint></option>\n"
 "                    </optioninput>\n"
 "                </optionresponse>\n"
 "                <optionresponse>\n"
 "                    <optioninput id=\"i2\">\n"
-"                        <option correct=\"True\">umieścić<optionhint>Tekst który wyświetli się po udzieleniu poprawnej odpowiedzi.</optionhint></option>\n"
-"                        <option correct=\"True\">Odpowiedź alternatywna<optionhint>Tekst który wyświetli się po udzieleniu poprawnej odpowiedzi.</optionhint></option>\n"
+"                        <option correct=\"True\">Rysy<optionhint>masz rację!</optionhint></option>\n"
+"                        <option correct=\"True\">rysy<optionhint>masz rację!</optionhint></option>\n"
 "                    </optioninput>\n"
 "                </optionresponse>\n"
 "                <demandhint>\n"
-"                    <hint>Podpowiedź 1</hint>\n"
-"                    <hint>Podpowiedź 2</hint>\n"
+"                    <hint>Najwyższy szczyt Ziemi jest zwany też Czomolungmą. Wznosi się na wysokość 8848 m n.p.m.</hint>\n"
+"                    <hint>Najwyższy szczyt Polski znajduje się w Tatrach na granicy polsko-słowackiej. Jego wysokość to 2499 m n.p.m.</hint>\n"
 "                </demandhint>\n"
 "            </embedded_answers>\n"
 "        "
@@ -129,22 +129,18 @@ msgstr "Waga"
 msgid "This assigns an integer value representing the weight of this problem"
 msgstr "Przypisuje liczbę całkowitą reprezentującą wagę tego problemu"
 
-#: embedded_answers.py:221 embedded_answers.py:224
+#: embedded_answers.py:223 embedded_answers.py:226
 msgid "Correct"
 msgstr "Poprawnie"
 
-#: embedded_answers.py:232 embedded_answers.py:235
+#: embedded_answers.py:234 embedded_answers.py:237
 msgid "Incorrect"
 msgstr "Błędnie"
 
-#: embedded_answers.py:341 embedded_answers.py:345
+#: embedded_answers.py:340 embedded_answers.py:344
 #: static/html/embedded_answers_view.html:19
 msgid "Hint"
 msgstr "Podpowiedź"
-
-#: embedded_answers.py:536
-msgid "Dummy"
-msgstr "Lorem ipsum"
 
 #: embedded_answers.py:440
 #, python-brace-format
@@ -163,6 +159,10 @@ msgstr[0] "/{weight} punkt"
 msgstr[1] "/{weight} punkty"
 msgstr[2] "/{weight} punkty"
 msgstr[3] "/{weight} punkty"
+
+#: embedded_answers.py:535
+msgid "Dummy"
+msgstr "Lorem ipsum"
 
 #: static/html/embedded_answers_edit.html:24
 msgid "Problem"
@@ -222,15 +222,15 @@ msgstr "Prześlij"
 msgid "Reset"
 msgstr "Zresetuj"
 
-#: static/js/embedded_answers_edit.js:213
+#: static/js/embedded_answers_edit.js:173
 msgid "A text which will appear after giving a correct answer"
 msgstr "Tekst, który wyświetli się po udzieleniu poprawnej odpowiedzi"
 
-#: static/js/embedded_answers_edit.js:283
+#: static/js/embedded_answers_edit.js:273
 msgid "Alternative reponse"
 msgstr "Alternatywna odpowiedź"
 
-#: static/js/embedded_answers_edit.js:284
+#: static/js/embedded_answers_edit.js:274
 msgid "A text which will appear after giving a correct alternative answer"
 msgstr "Tekst, który wyświetli się po udzieleniu poprawnej odpowiedzi"
 
@@ -238,9 +238,9 @@ msgstr "Tekst, który wyświetli się po udzieleniu poprawnej odpowiedzi"
 msgid "(Loading...)"
 msgstr "(Wczytywanie...)"
 
-#: static/js/embedded_answers_view.js:180
+#: static/js/embedded_answers_view.js:179
 msgid "You haven't completed the question."
-msgstr "Nie wypełniłeś pytania."
+msgstr "Nie uzupełniono pytania."
 
 #: static/js/template_edit.js:2
 msgid ""
