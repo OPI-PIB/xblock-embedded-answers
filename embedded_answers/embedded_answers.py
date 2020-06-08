@@ -52,23 +52,23 @@ class EmbeddedAnswersXBlock(XBlock):
         default=_('''
             <embedded_answers schema_version='1'>
                 <body>
-                    <p>Enter the problem here. In square brackets put <input_ref input="i1"/>, which you want to <input_ref input="i2"/> to the problem.</p>
+                    <p>The highest mountain on Earth is <input_ref input="i1"/>, and the highest mountain in Poland is <input_ref input="i2"/>.</p>
                 </body>
                 <optionresponse>
                     <optioninput id="i1">
-                        <option correct="True">a word or and expression<optionhint>A text which will appear after giving a correct answer.</optionhint></option>
-                        <option correct="True">Alternative response<optionhint>A text which will appear after giving a correct alternative answer.</optionhint></option>
+                        <option correct="True">Mount Everest<optionhint>you are right!</optionhint></option>
+                        <option correct="True">mount everest<optionhint>you are right!</optionhint></option>
                     </optioninput>
                 </optionresponse>
                 <optionresponse>
                     <optioninput id="i2">
-                        <option correct="True">add<optionhint>A text which will appear after giving a correct answer.</optionhint></option>
-                        <option correct="True">Alternative response<optionhint>A text which will appear after giving a correct alternative answer.</optionhint></option>
+                        <option correct="True">Rysy<optionhint>you are right!</optionhint></option>
+                        <option correct="True">rysy<optionhint>you are right!</optionhint></option>
                     </optioninput>
                 </optionresponse>
                 <demandhint>
-                    <hint>Hint 1</hint>
-                    <hint>Hint 2</hint>
+                    <hint>The highest peak on Earth is also called Chomolungma. Its current official elevation is 8,848 m above sea level.</hint>
+                    <hint>The highest Polish peak is located in the Tatra Mountains on the Polish-Slovak border. Its summit is at 2,499 m above sea level.</hint>
                 </demandhint>
             </embedded_answers>
         '''),

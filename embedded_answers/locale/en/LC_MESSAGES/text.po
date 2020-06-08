@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2020-05-27 13:50+0200\n"
+"POT-Creation-Date: 2020-06-08 09:07+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -43,32 +43,33 @@ msgid ""
 "\n"
 "            <embedded_answers schema_version='1'>\n"
 "                <body>\n"
-"                    <p>Enter the problem here. In square brackets put "
-"<input_ref input=\"i1\"/>, which you want to <input_ref input=\"i2\"/> to "
-"the problem.</p>\n"
+"                    <p>The highest mountain on Earth is <input_ref input="
+"\"i1\"/>, and the highest mountain in Poland is <input_ref input=\"i2\"/>.</"
+"p>\n"
 "                </body>\n"
 "                <optionresponse>\n"
 "                    <optioninput id=\"i1\">\n"
-"                        <option correct=\"True\">a word or and "
-"expression<optionhint>A text which will appear after giving a correct answer."
-"</optionhint></option>\n"
-"                        <option correct=\"True\">Alternative "
-"response<optionhint>A text which will appear after giving a correct "
-"alternative answer.</optionhint></option>\n"
+"                        <option correct=\"True\">Mount "
+"Everest<optionhint>you are right!</optionhint></option>\n"
+"                        <option correct=\"True\">mount "
+"everest<optionhint>you are right!</optionhint></option>\n"
 "                    </optioninput>\n"
 "                </optionresponse>\n"
 "                <optionresponse>\n"
 "                    <optioninput id=\"i2\">\n"
-"                        <option correct=\"True\">add<optionhint>A text which "
-"will appear after giving a correct answer.</optionhint></option>\n"
-"                        <option correct=\"True\">Alternative "
-"response<optionhint>A text which will appear after giving a correct "
-"alternative answer.</optionhint></option>\n"
+"                        <option correct=\"True\">Rysy<optionhint>you are "
+"right!</optionhint></option>\n"
+"                        <option correct=\"True\">rysy<optionhint>you are "
+"right!</optionhint></option>\n"
 "                    </optioninput>\n"
 "                </optionresponse>\n"
 "                <demandhint>\n"
-"                    <hint>Hint 1</hint>\n"
-"                    <hint>Hint 2</hint>\n"
+"                    <hint>The highest peak on Earth is also called "
+"Chomolungma. Its current official elevation is 8,848 m above sea level.</"
+"hint>\n"
+"                    <hint>The highest Polish peak is located in the Tatra "
+"Mountains on the Polish-Slovak border. Its summit is at 2,499 m above sea "
+"level.</hint>\n"
 "                </demandhint>\n"
 "            </embedded_answers>\n"
 "        "
@@ -110,21 +111,17 @@ msgstr ""
 msgid "This assigns an integer value representing the weight of this problem"
 msgstr ""
 
-#: embedded_answers.py:224embedded_answersrs.py:227
+#: embedded_answers.py:223 embedded_answers.py:226
 msgid "Correct"
 msgstr ""
 
-#: embedded_answers.py:235embedded_answersrs.py:238
+#: embedded_answers.py:234 embedded_answers.py:237
 msgid "Incorrect"
 msgstr ""
 
-#: embedded_answers.py:341 embedded_answers.py:345
+#: embedded_answers.py:340 embedded_answers.py:344
 #: static/html/embedded_answers_view.html:19
 msgid "Hint"
-msgstr ""
-
-#: embedded_answers.py:536
-msgid "Dummy"
 msgstr ""
 
 #: embedded_answers.py:440
@@ -140,6 +137,10 @@ msgid "/{weight} point"
 msgid_plural "/{weight} points"
 msgstr[0] ""
 msgstr[1] ""
+
+#: embedded_answers.py:535
+msgid "Dummy"
+msgstr ""
 
 #: static/html/embedded_answers_edit.html:24
 msgid "Problem"
@@ -195,15 +196,15 @@ msgstr ""
 msgid "Reset"
 msgstr ""
 
-#: static/js/embedded_answers_edit.js:213
+#: static/js/embedded_answers_edit.js:173
 msgid "A text which will appear after giving a correct answer"
 msgstr ""
 
-#: static/js/embedded_answers_edit.js:283
+#: static/js/embedded_answers_edit.js:273
 msgid "Alternative reponse"
 msgstr ""
 
-#: static/js/embedded_answers_edit.js:284
+#: static/js/embedded_answers_edit.js:274
 msgid "A text which will appear after giving a correct alternative answer"
 msgstr ""
 
@@ -211,7 +212,7 @@ msgstr ""
 msgid "(Loading...)"
 msgstr ""
 
-#: static/js/embedded_answers_view.js:180
+#: static/js/embedded_answers_view.js:179
 msgid "You haven't completed the question."
 msgstr ""
 
