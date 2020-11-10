@@ -4,6 +4,7 @@ const embeddedAnswersFeedbackMessage = embedded_answersi18n.gettext('Feedback');
 const embeddedAnswersAddAlternativeResponseButtonName = embedded_answersi18n.gettext('Add alternative response');
 const embeddedAnswersAlternativeResponsesLabel = embedded_answersi18n.gettext('Alternative responses');
 const embeddedAnswersTaggedWordLabel = embedded_answersi18n.gettext('Tagged word: ');
+const embeddedAnswersDeleteButtonLabel = embedded_answersi18n.gettext('Delete');
 var embeddedAnswersQuestionBodyTemplate = `
 <div>
     <br>
@@ -27,7 +28,6 @@ var embeddedAnswersQuestionBodyTemplate = `
     </div>
 </div>`;
 
-const embeddedAnswersDeleteButtonLabel = embedded_answersi18n.gettext('Delete');
 var embeddedAnswersQuestionAlternativeTemplate = `
 <div class="embedded-answers-question-alternatives-bottom-secondary">
     <input class="label setting-label input_question_word" type="text" value="">

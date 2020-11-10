@@ -1,15 +1,26 @@
 /* Javascript for Embedded Dropdown XBlock. */
-function EmbeddedAnswersXBlockInitEdit(runtime, element) {
+function EmbeddedAnswersXBlockInitEdit(runtime, element, data) {
   const self = this;
-
+  this.settings_fields = data.settings_fields;
   // init function, assigns the DOM elements to this.variables
   this.init = () => {
     this.initSelectors();
+    this.initHeaderButtons();
     this.getTemplates();
     this.initEvents();
     this.getOriginalModalEditorHeight();
-    this.changeModalEditorHeight();
+    this.changeModalEditorHeight(0.75);
     this.initXMLEditor();
+    this.initViews();
+  };
+
+  this.initHeaderButtons = () => {
+    const tempStringOne = embedded_answersi18n.gettext('Editor');
+    const tempStringTwo = embedded_answersi18n.gettext('Settings');
+    this.headerSelector.append(`<li class="action-item" data-mode="editor"><a href="#" class="editor-button is-set">${tempStringOne}</a></li>`);
+    this.headerSelector.append(`<li class="action-item" data-mode="settings"><a href="#" class="settings-button">${tempStringTwo}</a></li>`);
+    this.settingsButton = $('.settings-button');
+    this.editorButton = $('.editor-button');
   };
 
   this.initSelectors = () => {
@@ -29,7 +40,16 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
     this.actionCancelButton = $('.action-cancel', element);
     this.actionSaveButton = $('.action-save', element);
     this.demandHintsContainer = $('.embedded-answers-demandhints', element);
+    this.headerSelector = $('.modal-header .editor-modes');
+    this.editorContainer= $('.embedded-visual-editor');
+    this.settingsContainer = $('.embedded-answers-main-settings');
   };
+
+  this.initViews = () => {
+    this.settingsContainer.addClass('is-hidden');
+
+    // this.editorContainer
+  }
 
   this.getTemplates = () => {
     // this elements: questionBodyTemplate, questionAlternativeTemplate, demandHintTemplate are previously imported in embedded_answers.py. there are assigns to this.variables
@@ -57,6 +77,9 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
 
     this.actionCancelButton.bind('click', this.onCancel);
     this.actionSaveButton.bind('click', this.onSubmit);
+
+    this.settingsButton.bind('click', this.settingsView);
+    this.editorButton.bind('click', this.editorView);
   };
 
   this.getOriginalModalEditorHeight = () => {
@@ -65,9 +88,9 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
     this.originalEditorHeight = this.defaultEditorSelector.outerHeight();
   };
 
-  this.changeModalEditorHeight = () => {
+  this.changeModalEditorHeight = (height) => {
     // changing height of modal window to 75 perecent of
-    this.modalContentHeight = 0.75; // 75 percent of browser height;
+    this.modalContentHeight = height; // 75 percent of browser height;
     this.defaultModalContentSelector.outerHeight($(window).height() * this.modalContentHeight);
     this.defaultEditorSelector.outerHeight(this.defaultModalContentSelector.height() - this.defaultActionsSelector.outerHeight(true) - 2);
     this.bodySelector.scrollTop($(document).height());
@@ -171,7 +194,7 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
         });
       } else {
         const feedbackMessage = embedded_answersi18n.gettext('A text which will appear after giving a correct answer');
-        const xmlTemplate = embedded_answersi18n.gettext(`<optionresponse><optioninput id="${elementIndex}"><option correct="True">${regexMatches[inputRefIndex]}<optionhint>${feedbackMessage}</optionhint></option></optioninput></optionresponse>`);
+        const xmlTemplate = `<optionresponse><optioninput id="${elementIndex}"><option correct="True">${regexMatches[inputRefIndex]}<optionhint>${feedbackMessage}</optionhint></option></optioninput></optionresponse>`;
         if (self.$xml.find('optionresponse').length) {
           self.$xml.find('optionresponse').last().after(xmlTemplate);
         } else {
@@ -231,6 +254,18 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
     self.refreshView();
   };
 
+  this.editorView = () => {
+    this.settingsContainer.addClass('is-hidden');
+    this.editorContainer.removeClass('is-hidden');
+    this.changeModalEditorHeight(0.75);
+  };
+
+  this.settingsView = () => {
+    this.settingsContainer.removeClass('is-hidden');
+    this.editorContainer.addClass('is-hidden');
+    this.changeModalEditorHeight(0.55);
+  };
+
   this.getXmlString = (xmlData)=> {
     let xmlString;
     // IE
@@ -282,7 +317,7 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
       .parent()
       .attr('option_id');
     const parentElementIndex = $(this).parent().index() + 1;
-    const inputValue = $(this).val();
+    const inputValue = $(this).val().trim();
     self.$xml.find(`optioninput#${elementId}`).find('option').eq(parentElementIndex).html((id, currentContent) => {
       const regex = /\<optionhint\>(.*?)\<\/optionhint\>/g;
       const wordToChange = currentContent.replace(regex, '');
@@ -338,11 +373,12 @@ function EmbeddedAnswersXBlockInitEdit(runtime, element) {
   };
 
   this.onSubmit = function () {
-    const data = {
-      display_name: $('#embedded_answers_edit_display_name').val(),
-      weight: $('#embedded_answers_edit_weight').val(),
-      data: self.xmlEditor.getValue(),
+    var data = {
+      question_string: self.xmlEditor.getValue(),
     };
+    for (i in self.settings_fields){
+      data[self.settings_fields[i]]=$(`#embedded_answers_edit_${self.settings_fields[i]}`).val();
+    }
 
     runtime.notify('save', {
       state: 'start',
