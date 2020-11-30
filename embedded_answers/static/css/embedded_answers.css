@@ -1,6 +1,6 @@
 .embedded_answers .question_prompt {
   text-align: left;
-  padding-bottom: 20px;
+  /* padding-bottom: 20px; */
 }
 
 .embedded_answers .feedback {
@@ -35,4 +35,73 @@
     top: -0.5em;
     font-size: 80%;
     font-weight: bold;
+}
+
+.embedded_answers .notification.warning {
+    background: rgba(255, 215, 0, 0.65);
+}
+
+.embedded_answers .notification.error {
+    background: rgba(255,69,0,0.65);
+    color: #f8f9fa;
+}
+
+.embedded_answers .notification.general {
+    background: rgba(0, 139, 139, 0.65);
+    color: #f8f9fa ;
+}
+
+.embedded_answers .notification.general .icon {
+  color: #f8f9fa !important;
+}
+
+.embedded_answers .notification.is-hidden {
+  display: none !important;
+}
+
+.embedded_answers .notification {
+    align-items: center;
+    display: flex;
+    font-weight: 600;
+    margin-bottom: 1rem;
+    padding: 1rem;
+}
+
+
+/* .embedded_answers .notification.warning .icon {
+  margin-right: 15px;
+  color: #e2c01f;
+}
+
+.embedded_answers .notification.success .icon {
+  margin-right: 15px;
+  color: #008100;
+}
+
+.embedded_answers .notification.error .icon {
+  margin-right: 15px;
+  color: #b20610;
+} */
+
+.embedded_answers .notification .icon {
+  font-size: 2rem;
+  line-height: 1.125;
+  margin-right: 1rem;
+}
+/* .embedded_answers .notification-message {
+  display: inline-block;
+  width: 69.23077%;
+  margin-bottom: 8px;
+} */
+
+/* .fa, .fas, .far, .fal, .fab {
+  font-size: 2rem;
+  line-height: 1.125;
+  margin-right: 1rem;
+} */
+
+.embedded_answers .submission-feedback {
+  display: block;
+  /* font-size: .875rem; */
+  margin: 0 !important;
 }
