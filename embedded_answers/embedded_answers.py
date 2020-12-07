@@ -229,16 +229,9 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
             }
             return result
 
-        self.score = 0.0
-        self.attempts = 0
-        self.current_feedback = ''
         self.input_texts = {}
         self.student_correctness = {}
-        self.last_submission_time = None
-        self._publish_grade()
-
         self.has_saved_answers = False
-        self.completed = False
 
         result = {
             'success': True,
