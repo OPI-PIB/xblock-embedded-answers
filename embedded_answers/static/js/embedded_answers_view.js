@@ -240,12 +240,14 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
 	}
 
     this.restoreInputTexts = (input_texts) => {
-        this.questionPromptContainer.find("input").each(function() {
-            if (this.getAttribute('xblock_id') == self.xblock_id) {
-                // reset the select value to what the student submitted
-                this.value = input_texts[this.getAttribute('input')];
-            }
-        });
+        if (Object.keys(input_texts).length){
+            this.questionPromptContainer.find("input").each(function() {
+                if (this.getAttribute('xblock_id') == self.xblock_id) {
+                    // reset the select value to what the student submitted
+                    this.value = input_texts[this.getAttribute('input')];
+                }
+            });
+        }
     }
 
 	this.restoreState = (result) => {
@@ -265,22 +267,23 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
     }
 
 	this.addDecorations = (correctness, input_text_order) => {
-        this.questionPromptContainer.find("input").each(function() {
-            if (this.getAttribute('xblock_id') == self.xblock_id) {
-
-                var decoration_number = input_text_order[this.getAttribute('input')];
-                if (decoration_number !== undefined){
-                    // add new decoration to the select
-                    if (correctness[this.getAttribute('input')] == 'True') {
-                        $('<span class="embedded_answers feedback_number_correct">(' + decoration_number + ')</span>').insertAfter(this);
-                        $('<span class="fa fa-check status correct mx-1"/>').insertAfter(this);
-                    } else {
-                        $('<span class="embedded_answers feedback_number_incorrect">(' + decoration_number + ')</span>').insertAfter(this);
-                        $('<span class="fa fa-times status incorrect mx-1"/>').insertAfter(this);
+        if (Object.keys(correctness).length && Object.keys(input_text_order).length) {
+            this.questionPromptContainer.find("input").each(function() {
+                if (this.getAttribute('xblock_id') == self.xblock_id) {
+                    var decoration_number = input_text_order[this.getAttribute('input')];
+                    if (decoration_number !== undefined){
+                        // add new decoration to the select
+                        if (correctness[this.getAttribute('input')] == 'True') {
+                            $('<span class="embedded_answers feedback_number_correct">(' + decoration_number + ')</span>').insertAfter(this);
+                            $('<span class="fa fa-check status correct mx-1"/>').insertAfter(this);
+                        } else {
+                            $('<span class="embedded_answers feedback_number_incorrect">(' + decoration_number + ')</span>').insertAfter(this);
+                            $('<span class="fa fa-times status incorrect mx-1"/>').insertAfter(this);
+                        }
                     }
                 }
-        	}
-        });
+            });
+        }
     }
 
     this.resetCorrectAnswers = () => {
