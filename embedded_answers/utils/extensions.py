@@ -527,6 +527,15 @@ class XBlockCapaMixin(XBlock):
             else:
                 return True
 
+    def should_show_hint_button(self):
+        tree = etree.parse(StringIO(_(self.question_string)))
+        raw_hints = tree.xpath('/embedded_answers/demandhint/hint')
+
+        if len(raw_hints) >= 1:
+            return True
+        else:
+            return False
+
     def close_date(self):
         if self.graceperiod is not None and self.due:
            return  self.due + self.graceperiod

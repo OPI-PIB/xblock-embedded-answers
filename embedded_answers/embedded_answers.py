@@ -92,6 +92,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
             'submit_feedback': self.submit_feedback_msg(),
             'should_show_answer_button': self.should_show_answer_button(),
             'should_show_save_button': self.should_show_save_button(),
+            'should_show_hint_button': self.should_show_hint_button(),
         }
 
         frag.add_content(loader.render_django_template(
