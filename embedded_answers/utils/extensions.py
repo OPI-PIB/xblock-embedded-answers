@@ -5,6 +5,7 @@ from django.template import Context, Template
 from django.utils import translation
 import datetime
 from pytz import utc
+import re
 
 from xblock.core import XBlock
 from xblock.fields import Scope, String, List, Float, Integer, Dict, Boolean, DateTime, Sentinel
@@ -232,8 +233,7 @@ class XBlockCapaMixin(XBlock):
         main += '</br>'
 
         i = 1
-        for key, value in sorted(self.correctness.items(), key=lambda x: x[0]):
-
+        for key, value in sorted(self.correctness.items(), key=lambda x: int(re.search(r'\d+', x[0]).group())):
             main += elem.format(id=i, answer_list=separator.join(value.keys()))
             main += '</br>'
             i += 1
@@ -526,6 +526,15 @@ class XBlockCapaMixin(XBlock):
                 return False
             else:
                 return True
+
+    def should_show_hint_button(self):
+        tree = etree.parse(StringIO(_(self.question_string)))
+        raw_hints = tree.xpath('/embedded_answers/demandhint/hint')
+
+        if len(raw_hints) >= 1:
+            return True
+        else:
+            return False
 
     def close_date(self):
         if self.graceperiod is not None and self.due:
