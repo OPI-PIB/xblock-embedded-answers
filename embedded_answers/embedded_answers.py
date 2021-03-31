@@ -92,6 +92,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
             'submit_feedback': self.submit_feedback_msg(),
             'should_show_answer_button': self.should_show_answer_button(),
             'should_show_save_button': self.should_show_save_button(),
+            'should_show_hint_button': self.should_show_hint_button(),
         }
 
         frag.add_content(loader.render_django_template(
@@ -169,7 +170,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
 
         # use sorted input_text_order to iterate through input_texts dict
         for key,pos in sorted(self.input_text_order.iteritems(), key=lambda (k,v): (v,k)):
-            selected_text = self.input_texts[key].lower()
+            selected_text = self.input_texts[key]
 
             if self.correctness.get(key,dict()).get(selected_text,'False').lower() in ('true',):
                 default_feedback = ''
@@ -229,16 +230,9 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
             }
             return result
 
-        self.score = 0.0
-        self.attempts = 0
-        self.current_feedback = ''
         self.input_texts = {}
         self.student_correctness = {}
-        self.last_submission_time = None
-        self._publish_grade()
-
         self.has_saved_answers = False
-        self.completed = False
 
         result = {
             'success': True,
@@ -354,10 +348,10 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                 valuefeedback = dict()
                 if optioninput.attrib['id'] == input_ref.attrib['input']:
                     for option in optioninput.iter('option'):
-                        valuecorrectness[option.text.lower()] = option.attrib['correct']
+                        valuecorrectness[option.text] = option.attrib['correct']
                         input_ref.set('size',str(len(option.text)));
                         for optionhint in option.iter('optionhint'):
-                            valuefeedback[option.text.lower()] = optionhint.text
+                            valuefeedback[option.text] = optionhint.text
                     input_ref.tag = 'input'
                     input_ref.attrib['xblock_id'] = unicode(self.scope_ids.usage_id)
                     self.correctness[optioninput.attrib['id']] = valuecorrectness
