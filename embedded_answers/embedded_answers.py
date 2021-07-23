@@ -83,10 +83,10 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         attributes = ''
 
         ctx = {
+            'prompt': self._get_body(self.question_string),
             'element_id': self.location.html_id(),
             'display_name': self.display_name,
             'problem_progress': self._get_problem_progress(),
-            'prompt': self._get_body(self.question_string),
             'attributes': attributes,
             'should_show_reset_button': self.should_show_reset_button(),
             'should_enable_submit_button': self.should_enable_submit_button(),
@@ -195,15 +195,16 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                     self.current_feedback += default_feedback
                 self.student_correctness[key] = 'False'
         self.current_feedback = self.current_feedback[:-2]
-        self.score = float(self.weight) * correct_count / len(self.correctness)
+        # self.score = float(self.weight) * correct_count / len(self.correctness)
         self.attempts = self.attempts + 1
+        self.earned_points = correct_count
         self.set_last_submission_time()
         self._publish_grade()
 
         self.runtime.publish(self, 'input_selected', {
             'input_texts': self.input_texts,
             'correctness': self.student_correctness,
-        })
+    })
         self._publish_problem_check()
 
         self.completed = True
@@ -358,6 +359,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                     self.correctness[optioninput.attrib['id']] = valuecorrectness
                     self.feedback[optioninput.attrib['id']] = valuefeedback
 
+        self.possible_points = len(self.correctness)
         body = tree.xpath('/embedded_answers/body')
         bodystring = etree.tostring(body[0], encoding='unicode')
 

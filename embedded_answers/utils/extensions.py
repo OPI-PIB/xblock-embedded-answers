@@ -13,6 +13,9 @@ from xblock.core import XBlock
 from xblock.fields import Scope, String, List, Float, Integer, Dict, Boolean, DateTime, Sentinel
 from xblockutils.resources import ResourceLoader
 
+from lxml import etree
+from six import StringIO, text_type
+
 UNSET = Sentinel("fields.UNSET")
 _ = lambda text: text
 loader = ResourceLoader(__name__)
@@ -83,6 +86,16 @@ class XBlockCapaMixin(XBlock):
     )
 
     score = Float(
+        default=0.0,
+        scope=Scope.user_state,
+    )
+
+    possible_points = Float(
+        default=0.0,
+        scope=Scope.user_state,
+    )
+
+    earned_points = Float(
         default=0.0,
         scope=Scope.user_state,
     )
@@ -361,7 +374,7 @@ class XBlockCapaMixin(XBlock):
         on the user's current score
         """
         ngettext = self.runtime.service(self, "i18n").ngettext
-
+        score = self.get_progress()
         if not self.correctness_available():
             if self.graded:
                 return ngettext(
@@ -387,7 +400,7 @@ class XBlockCapaMixin(XBlock):
                                 '{weight} points possible (ungraded)',
                                 self.weight).format(weight=self.weight)
             else:
-                score_string = ('{0:.0f}' if self.score.is_integer() else '{0:.1f}').format(self.score)
+                score_string = ('{0:.0f}' if score.is_integer() else '{0:.1f}').format(score)
                 if self.graded:
                     return score_string + ngettext(
                                 "/{weight} point (graded)",
@@ -402,6 +415,9 @@ class XBlockCapaMixin(XBlock):
                 else:
                     return ''
 
+    def get_progress(self):
+        return self.earned_points * self.weight / self.possible_points
+
     def _get_answer_notification(self):
         """
         Generate the answer notification type and message from the current problem status.
@@ -412,34 +428,36 @@ class XBlockCapaMixin(XBlock):
         answer_notification_message = None
         answer_notification_type = None
 
-        score_string = ('{0:.0f}' if self.score.is_integer() else '{0:.1f}').format(self.score)
+        score = self.get_progress()
+
+        score_string = ('{0:.0f}' if score.is_integer() else '{0:.1f}').format(score)
 
         # Show only a generic message if hiding correctness
         if not self.correctness_available():
             answer_notification_type = 'submitted'
             answer_notification_message = _("Answer submitted.") + ' '
 
-        elif self.score == 0:
+        elif self.earned_points == 0:
             answer_notification_type = 'incorrect'
             answer_notification_message= _('Incorrect.') + ' '
             answer_notification_message =  ngettext(
                     "Incorrect ({progress} point).",
                     "Incorrect ({progress} points).",
-                    self.score
+                    score
                 ).format(progress=score_string)
-        elif self.score != self.weight:
+        elif self.earned_points != self.possible_points:
             answer_notification_type = 'partially-correct'
             answer_notification_message = ngettext(
                     "Partially correct ({progress} point).",
                     "Partially correct ({progress} points).",
-                    self.score
+                    score
                 ).format(progress=score_string) + ' '
-        elif self.score == self.weight:
+        elif self.earned_points == self.possible_points:
             answer_notification_type = 'correct'
             answer_notification_message = ngettext(
                     "Correct ({progress} point).",
                     "Correct ({progress} points).",
-                    self.score
+                    score
                 ).format(progress=score_string) + ' '
 
         if answer_notification_type == 'incorrect':
@@ -458,7 +476,7 @@ class XBlockCapaMixin(XBlock):
             self,
             'grade',
             {
-                'value': self.score,
+                'value': self.get_progress(),
                 'max_value': self.weight,
             }
         )
@@ -468,7 +486,7 @@ class XBlockCapaMixin(XBlock):
             self,
             'problem_check',
             {
-                'grade': self.score,
+                'grade': self.get_progress(),
                 'max_grade': self.weight,
             }
         )
@@ -549,7 +567,7 @@ class XBlockCapaMixin(XBlock):
         """
         True iff full points
         """
-        return self.score==self.weight
+        return self.earned_points==self.possible_points
 
     def is_past_due(self):
         """
@@ -610,6 +628,15 @@ class XBlockCapaMixin(XBlock):
             return True
 
         return False
+
+    def should_show_hint_button(self):
+        tree = etree.parse(StringIO(_(self.question_string)))
+        raw_hints = tree.xpath('/embedded_answers/demandhint/hint')
+
+        if len(raw_hints) >= 1:
+            return True
+        else:
+            return False
 
     def correctness_available(self):
         """
