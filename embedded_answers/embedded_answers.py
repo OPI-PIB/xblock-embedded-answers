@@ -6,6 +6,7 @@ from django.utils import translation
 from collections import OrderedDict
 import datetime
 from pytz import utc
+from future.utils import iteritems
 
 from xblock.core import XBlock
 from xblock.fields import Scope, String
@@ -14,7 +15,7 @@ from xblockutils.resources import ResourceLoader
 from .utils.extensions import XBlockCapaMixin
 
 from lxml import etree
-from StringIO import StringIO
+from six import StringIO, text_type
 
 _ = lambda text: text
 loader = ResourceLoader(__name__)
@@ -82,10 +83,10 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         attributes = ''
 
         ctx = {
+            'prompt': self._get_body(self.question_string),
             'element_id': self.location.html_id(),
             'display_name': self.display_name,
             'problem_progress': self._get_problem_progress(),
-            'prompt': self._get_body(self.question_string),
             'attributes': attributes,
             'should_show_reset_button': self.should_show_reset_button(),
             'should_enable_submit_button': self.should_enable_submit_button(),
@@ -144,7 +145,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         '''
         Save student answer
         '''
-        _ = self.runtime.service(self, "i18n").ugettext
+        _ = self.runtime.service(self, "i18n").gettext
         current_time = datetime.datetime.now(utc)
         # Wait time between resets: check if is too soon for submission.
 
@@ -169,8 +170,8 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         correct_count = 0
 
         # use sorted input_text_order to iterate through input_texts dict
-        for key,pos in sorted(self.input_text_order.iteritems(), key=lambda (k,v): (v,k)):
-            selected_text = self.input_texts[key]
+        for key,pos in sorted(list(iteritems(self.input_text_order)), key=lambda k: k[::-1]):
+            selected_text = self.input_texts[key].lower()
 
             if self.correctness.get(key,dict()).get(selected_text,'False').lower() in ('true',):
                 default_feedback = ''
@@ -194,15 +195,16 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                     self.current_feedback += default_feedback
                 self.student_correctness[key] = 'False'
         self.current_feedback = self.current_feedback[:-2]
-        self.score = float(self.weight) * correct_count / len(self.correctness)
+        # self.score = float(self.weight) * correct_count / len(self.correctness)
         self.attempts = self.attempts + 1
+        self.earned_points = correct_count
         self.set_last_submission_time()
         self._publish_grade()
 
         self.runtime.publish(self, 'input_selected', {
             'input_texts': self.input_texts,
             'correctness': self.student_correctness,
-        })
+    })
         self._publish_problem_check()
 
         self.completed = True
@@ -216,7 +218,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         '''
         Reset student answer
         '''
-        _ = self.runtime.service(self, "i18n").ugettext
+        _ = self.runtime.service(self, "i18n").gettext
 
         if not self.should_show_reset_button():
             result = {
@@ -268,7 +270,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                 try:
                     setattr(self, key, int(value))
                 except ValueError:
-                    if isinstance(value, unicode):
+                    if isinstance(value, text_type):
                         setattr(self, key, value)
             else:
                 setattr(self, key, value)
@@ -281,7 +283,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
     def send_xblock_id(self, submissions, suffix=''):
         return {
             'result': 'success',
-            'xblock_id': unicode(self.scope_ids.usage_id),
+            'xblock_id': text_type(self.scope_ids.usage_id),
         }
 
     @XBlock.json_handler
@@ -299,7 +301,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
 
     @XBlock.json_handler
     def save_state(self, submissions, suffix=''):
-        _ = self.runtime.service(self, "i18n").ugettext
+        _ = self.runtime.service(self, "i18n").gettext
         self.input_texts = submissions['responses']
         self.input_text_order = submissions['responses_order']
         self.has_saved_answers = True
@@ -310,7 +312,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
 
     @XBlock.json_handler
     def send_hints(self, submissions, suffix=''):
-        _ = self.runtime.service(self, "i18n").ugettext
+        _ = self.runtime.service(self, "i18n").gettext
         tree = etree.parse(StringIO(_(self.question_string)))
         raw_hints = tree.xpath('/embedded_answers/demandhint/hint')
 
@@ -353,10 +355,11 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                         for optionhint in option.iter('optionhint'):
                             valuefeedback[option.text] = optionhint.text
                     input_ref.tag = 'input'
-                    input_ref.attrib['xblock_id'] = unicode(self.scope_ids.usage_id)
+                    input_ref.attrib['xblock_id'] = text_type(self.scope_ids.usage_id)
                     self.correctness[optioninput.attrib['id']] = valuecorrectness
                     self.feedback[optioninput.attrib['id']] = valuefeedback
 
+        self.possible_points = len(self.correctness)
         body = tree.xpath('/embedded_answers/body')
         bodystring = etree.tostring(body[0], encoding='unicode')
 
