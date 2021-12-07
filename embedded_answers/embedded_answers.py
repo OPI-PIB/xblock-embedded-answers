@@ -152,7 +152,6 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         if self.closed():
             msg = _(u'Problem closed')
             return self.submit_feeedback(status=False, extra_element={'submit_notification' : {'status':'error','msg':msg}})
-
         if self.last_submission_time is not None and self.submission_wait_seconds != 0:
             seconds_since_submission = (current_time - self.last_submission_time).total_seconds()
             if seconds_since_submission < self.submission_wait_seconds:
@@ -171,8 +170,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
 
         # use sorted input_text_order to iterate through input_texts dict
         for key,pos in sorted(list(iteritems(self.input_text_order)), key=lambda k: k[::-1]):
-            selected_text = self.input_texts[key].lower()
-
+            selected_text = self.input_texts.get(key, '').lower()
             if self.correctness.get(key,dict()).get(selected_text,'False').lower() in ('true',):
                 default_feedback = ''
                 if selected_text in self.feedback[key]:
@@ -350,10 +348,10 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                 valuefeedback = dict()
                 if optioninput.attrib['id'] == input_ref.attrib['input']:
                     for option in optioninput.iter('option'):
-                        valuecorrectness[option.text] = option.attrib['correct']
+                        valuecorrectness[option.text.lower()] = option.attrib['correct']
                         input_ref.set('size',str(len(option.text)));
                         for optionhint in option.iter('optionhint'):
-                            valuefeedback[option.text] = optionhint.text
+                            valuefeedback[option.text.lower()] = optionhint.text
                     input_ref.tag = 'input'
                     input_ref.attrib['xblock_id'] = text_type(self.scope_ids.usage_id)
                     self.correctness[optioninput.attrib['id']] = valuecorrectness
