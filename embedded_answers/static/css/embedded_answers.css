@@ -2,17 +2,39 @@
   text-align: left;
   /* padding-bottom: 20px; */
 }
-
+.embedded_answers .problem {
+  background-color: white;
+}
+.embedded_answers .action {
+  background-color: white;
+  border:none;
+}
 .embedded_answers .feedback {
   text-align: left;
   padding-bottom: 20px;
 }
-
+.embedded_answers #input{
+  width: 12.5rem;
+}
+.embedded_answers .wide{
+  width: 25rem;
+}
+.embedded_answers .wrapper-problem-title{
+  color: #262640;
+  font: normal normal bold 20px/30px Mulish;
+}
 .embedded_answers .hint {
   text-align: left;
   padding-bottom: 20px;
 }
-
+.embedded_answers .question_prompt{
+  font: normal normal normal 1.125rem/1.75 Mulish;
+  color: #262640;
+}
+.embedded_answers .input-number{
+  font: normal normal 600 1.125rem/1.75 Mulish;
+  color: #262640;
+}
 .embedded_answers .correct {
     color: #008100 !important;
 }

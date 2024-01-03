@@ -32,7 +32,11 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
         this.problemProgressContainer = this.$element.find('.problem-progress');
         this.questionPromptContainer = this.$element.find('.question_prompt');
         this.submissionFeedbackContainer = this.$element.find('.submission-feedback');
-
+        var counter = 1;
+        this.questionPromptContainer.find("input").each(function() {
+            $(this).before('<span class="input-number">' + counter + '</span>');
+            counter++;
+        });
     }
 
     this.initAjaxRequests = () => {
@@ -245,6 +249,11 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
                 if (this.getAttribute('xblock_id') == self.xblock_id) {
                     // reset the select value to what the student submitted
                     this.value = input_texts[this.getAttribute('input')];
+                    if (this.value.length > 25) {
+                        $(this).addClass('wide'); 
+                    } else {
+                        $(this).removeClass('wide'); 
+                    }
                 }
             });
         }
@@ -266,7 +275,7 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
         this.resetPrompt();
     }
 
-	this.addDecorations = (correctness, input_text_order) => {
+    this.addDecorations = (correctness, input_text_order) => {
         if (Object.keys(correctness).length && Object.keys(input_text_order).length) {
             this.questionPromptContainer.find("input").each(function() {
                 if (this.getAttribute('xblock_id') == self.xblock_id) {
@@ -274,11 +283,9 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
                     if (decoration_number !== undefined){
                         // add new decoration to the select
                         if (correctness[this.getAttribute('input')] == 'True') {
-                            $('<span class="embedded_answers feedback_number_correct">(' + decoration_number + ')</span>').insertAfter(this);
-                            $('<span class="fa fa-check status correct mx-1"/>').insertAfter(this);
+                            $('<img src="../images/Done_Weight-400.svg" class="status correct mx-1"/>').insertAfter(this);
                         } else {
-                            $('<span class="embedded_answers feedback_number_incorrect">(' + decoration_number + ')</span>').insertAfter(this);
-                            $('<span class="fa fa-times status incorrect mx-1"/>').insertAfter(this);
+                            $('<img src="../images/Close_Weight-400.svg" class="status incorrect mx-1"/>').insertAfter(this);
                         }
                     }
                 }
