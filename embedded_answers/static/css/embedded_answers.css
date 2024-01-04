@@ -21,7 +21,7 @@
 }
 .embedded_answers .wrapper-problem-title{
   color: #262640;
-  font: normal normal bold 20px/30px Mulish;
+  font: normal normal bold 1.25rem/1.875 Mulish;
 }
 .embedded_answers .hint {
   text-align: left;
