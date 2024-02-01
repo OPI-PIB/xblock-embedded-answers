@@ -1,1 +1,1 @@
-from .utils.extensions import XBlockCapaMixin
+from .extensions import XBlockCapaMixin
