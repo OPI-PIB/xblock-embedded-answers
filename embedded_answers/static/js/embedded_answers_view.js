@@ -32,10 +32,10 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
         this.problemProgressContainer = this.$element.find('.problem-progress');
         this.questionPromptContainer = this.$element.find('.question_prompt');
         this.submissionFeedbackContainer = this.$element.find('.submission-feedback');
-        var counter = 1;
+        this.counter = 1;
         this.questionPromptContainer.find("input").each(function() {
-            $(this).before('<span class="input-number">' + counter + '</span>');
-            counter++;
+            $(this).before('<span class="input-number">' + self.counter + '</span>');
+            self.counter++;
         });
     }
 
@@ -59,7 +59,7 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
         this.hint;
         this.hints;
         this.hint_counter = 0;
-        this.prompt = this.questionPromptContainer.html();;
+        this.prompt = this.questionPromptContainer.html();
         this.xblock_id = '';
     }
 
@@ -283,9 +283,9 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
                     if (decoration_number !== undefined){
                         // add new decoration to the select
                         if (correctness[this.getAttribute('input')] == 'True') {
-                            $('<img src="../images/Done_Weight-400.svg" class="status correct mx-1"/>').insertAfter(this);
+                            $('<img src="static/image/Done_weight-400.svg" class="status correct mx-1"/>').insertAfter(this);
                         } else {
-                            $('<img src="../images/Close_Weight-400.svg" class="status incorrect mx-1"/>').insertAfter(this);
+                            $('<img src="static/image/Done_weight-400.svg" class="status incorrect mx-1"/>').insertAfter(this);
                         }
                     }
                 }
