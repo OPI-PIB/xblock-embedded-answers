@@ -1,20 +1,17 @@
 """ Embedded Responses XBlock main Python class """
 
+import datetime
+import re
+
 import pkg_resources
 from django.template import Context, Template
 from django.utils import translation
-import datetime
+from lxml import etree
 from pytz import utc
-import re
-from six import text_type
-
-
+from six import StringIO, text_type
 from xblock.core import XBlock
 from xblock.fields import Scope, String, List, Float, Integer, Dict, Boolean, DateTime, Sentinel
 from xblockutils.resources import ResourceLoader
-
-from lxml import etree
-from six import StringIO, text_type
 
 UNSET = Sentinel("fields.UNSET")
 _ = lambda text: text

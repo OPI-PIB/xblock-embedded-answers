@@ -1,21 +1,18 @@
 """ Embedded Responses XBlock main Python class """
 
-import pkg_resources
-from django.template import Context, Template
-from django.utils import translation
-from collections import OrderedDict
 import datetime
-from pytz import utc
-from future.utils import iteritems
+from collections import OrderedDict
 
+from future.utils import iteritems
+from lxml import etree
+from pytz import utc
+from six import StringIO, text_type
+from web_fragments.fragment import Fragment
 from xblock.core import XBlock
 from xblock.fields import Scope, String
-from web_fragments.fragment import Fragment
 from xblockutils.resources import ResourceLoader
-from .utils.extensions import XBlockCapaMixin
 
-from lxml import etree
-from six import StringIO, text_type
+from embedded_answers.utils import XBlockCapaMixin
 
 _ = lambda text: text
 loader = ResourceLoader(__name__)
@@ -66,13 +63,13 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         ''')
     )
 
-
     skip_flag = False
     has_score = True
 
     '''
     Main functions
     '''
+
     def student_view(self, context=None):
         '''
         The primary view of the XBlock, shown to students
@@ -98,7 +95,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
 
         frag.add_content(loader.render_django_template(
             'static/html/embedded_answers_view.html',
-            context = ctx,
+            context=ctx,
             i18n_service=self.runtime.service(self, "i18n"),
         ))
 
@@ -116,12 +113,13 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         self.init_emulation()
         frag = Fragment()
         settings_ctx = dict()
-        settings_fields = ['display_name', 'weight', 'show_reset_button', 'max_attempts', 'showanswer', 'submission_wait_seconds']
-        settings_fields_enum =  {key: i for i, key in enumerate(settings_fields)}
+        settings_fields = ['display_name', 'weight', 'show_reset_button', 'max_attempts', 'showanswer',
+                           'submission_wait_seconds']
+        settings_fields_enum = {key: i for i, key in enumerate(settings_fields)}
         for key, value in self.fields.items():
             if key in settings_fields:
-                value.value = getattr(self,key)
-                settings_ctx.update({key:value})
+                value.value = getattr(self, key)
+                settings_ctx.update({key: value})
         settings_ctx = OrderedDict(sorted(settings_ctx.items(), key=lambda d: settings_fields_enum[d[0]]))
         ctx = {
             'display_name': self.display_name,
@@ -131,7 +129,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         }
         frag.add_content(loader.render_django_template(
             'static/html/embedded_answers_edit.html',
-            context = ctx,
+            context=ctx,
             i18n_service=self.runtime.service(self, "i18n"),
         ))
         frag.add_css(loader.load_unicode('static/css/embedded_answers_edit.css'))
@@ -151,7 +149,8 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
 
         if self.closed():
             msg = _(u'Problem closed')
-            return self.submit_feeedback(status=False, extra_element={'submit_notification' : {'status':'error','msg':msg}})
+            return self.submit_feeedback(status=False,
+                                         extra_element={'submit_notification': {'status': 'error', 'msg': msg}})
         if self.last_submission_time is not None and self.submission_wait_seconds != 0:
             seconds_since_submission = (current_time - self.last_submission_time).total_seconds()
             if seconds_since_submission < self.submission_wait_seconds:
@@ -159,7 +158,8 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                 msg = _(u'You must wait at least {wait_secs} between submissions. {remaining_secs} remaining.').format(
                     wait_secs=self.pretty_print_seconds(self.submission_wait_seconds),
                     remaining_secs=self.pretty_print_seconds(remaining_secs))
-                return self.submit_feeedback(status=False, extra_element={'submit_notification' : {'status':'error','msg':msg}})
+                return self.submit_feeedback(status=False,
+                                             extra_element={'submit_notification': {'status': 'error', 'msg': msg}})
 
         self.input_texts = submissions['responses']
         self.input_text_order = submissions['responses_order']
@@ -169,13 +169,14 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         correct_count = 0
 
         # use sorted input_text_order to iterate through input_texts dict
-        for key,pos in sorted(list(iteritems(self.input_text_order)), key=lambda k: k[::-1]):
+        for key, pos in sorted(list(iteritems(self.input_text_order)), key=lambda k: k[::-1]):
             selected_text = self.input_texts.get(key, '').lower()
-            if self.correctness.get(key,dict()).get(selected_text,'False').lower() in ('true',):
+            if self.correctness.get(key, dict()).get(selected_text, 'False').lower() in ('true',):
                 default_feedback = ''
                 if selected_text in self.feedback[key]:
                     if self.feedback[key][selected_text]:
-                        self.current_feedback += '<small><i>(' + str(pos) + ') ' + self.feedback[key][selected_text] + '</i></small><br>'
+                        self.current_feedback += '<small><i>(' + str(pos) + ') ' + self.feedback[key][
+                            selected_text] + '</i></small><br>'
                     else:
                         self.current_feedback += default_feedback
                 else:
@@ -186,7 +187,8 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                 default_feedback = ''
                 if selected_text in self.feedback[key]:
                     if self.feedback[key][selected_text] is not None:
-                        self.current_feedback += '<small><i>(' + str(pos) + ') ' + self.feedback[key][selected_text] + '</i></small><br>'
+                        self.current_feedback += '<small><i>(' + str(pos) + ') ' + self.feedback[key][
+                            selected_text] + '</i></small><br>'
                     else:
                         self.current_feedback += default_feedback
                 else:
@@ -202,12 +204,13 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         self.runtime.publish(self, 'input_selected', {
             'input_texts': self.input_texts,
             'correctness': self.student_correctness,
-    })
+        })
         self._publish_problem_check()
 
         self.completed = True
 
-        result = self.submit_feeedback(status=True, extra_element={'submit_notification': self._get_answer_notification()})
+        result = self.submit_feeedback(status=True,
+                                       extra_element={'submit_notification': self._get_answer_notification()})
 
         return result
 
@@ -220,13 +223,14 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
 
         if not self.should_show_reset_button():
             result = {
-            'status': False,
-            'problem_progress': self._get_problem_progress(),
-            'submit_feedback': self.submit_feedback_msg(),
-            'should_enable_submit_button': self.should_enable_submit_button(),
-            'should_show_answer_button': self.should_show_answer_button(),
-            'should_show_save_button': self.should_show_save_button(),
-            'reset_notification' : {'status':'error','msg':_("You cannot select Reset for a problem that is closed.")}
+                'status': False,
+                'problem_progress': self._get_problem_progress(),
+                'submit_feedback': self.submit_feedback_msg(),
+                'should_enable_submit_button': self.should_enable_submit_button(),
+                'should_show_answer_button': self.should_show_answer_button(),
+                'should_show_save_button': self.should_show_save_button(),
+                'reset_notification': {'status': 'error',
+                                       'msg': _("You cannot select Reset for a problem that is closed.")}
             }
             return result
 
@@ -250,7 +254,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         Save studio edits
         '''
         for key, value in submissions.items():
-            if key=='question_string':
+            if key == 'question_string':
                 try:
                     etree.parse(StringIO(value))
                     setattr(self, key, value)
@@ -259,7 +263,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
                         'result': 'error',
                         'message': e.message
                     }
-            elif key in ['weight',]:
+            elif key in ['weight', ]:
                 try:
                     setattr(self, key, int(value))
                 except ValueError:
@@ -294,7 +298,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
             'input_text_order': self.input_text_order if self.correctness_available() else '',
             'current_feedback': self.current_feedback if self.correctness_available() else '',
             'completed': self.completed,
-            'saved' : self.has_saved_answers,
+            'saved': self.has_saved_answers,
         }
 
     @XBlock.json_handler
@@ -342,14 +346,14 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
         self.correctness = {}
         self.feedback = {}
         for input_ref in tree.iter('input_ref'):
-            input_ref.set('type','text')
+            input_ref.set('type', 'text')
             for optioninput in tree.iter('optioninput'):
                 valuecorrectness = dict()
                 valuefeedback = dict()
                 if optioninput.attrib['id'] == input_ref.attrib['input']:
                     for option in optioninput.iter('option'):
                         valuecorrectness[option.text.lower()] = option.attrib['correct']
-                        input_ref.set('size',str(len(option.text)));
+                        input_ref.set('size', str(len(option.text)));
                         for optionhint in option.iter('optionhint'):
                             valuefeedback[option.text.lower()] = optionhint.text
                     input_ref.tag = 'input'
@@ -385,7 +389,7 @@ class EmbeddedAnswersXBlock(XBlockCapaMixin):
             'problem_progress': self._get_problem_progress(),
             'submissions': self.input_texts,
             'correctness': self.student_correctness if self.correctness_available() else '',
-            'input_text_order': self.input_text_order  if self.correctness_available() else '',
+            'input_text_order': self.input_text_order if self.correctness_available() else '',
             'submit_feedback': self.submit_feedback_msg(),
             'should_enable_submit_button': self.should_enable_submit_button(),
             'should_show_reset_button': self.should_show_reset_button(),

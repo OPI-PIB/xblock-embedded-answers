@@ -1,4 +1,4 @@
-FROM jbarciauskas/xblock-sdk
+FROM openedx/xblock-sdk
 RUN mkdir -p /usr/local/src/xblock-embedded-answers
 VOLUME ["/usr/local/src/xblock-embedded-answers"]
 RUN apt-get update && apt-get install -y gettext

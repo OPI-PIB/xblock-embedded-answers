@@ -1,7 +1,7 @@
 """Setup for Embedded Answers XBlock."""
 
 import os
-from setuptools import setup
+from setuptools import setup, find_packages
 
 
 def package_data(pkg, roots):
@@ -22,12 +22,10 @@ def package_data(pkg, roots):
 
 setup(
     name='xblock-embedded-answers',
-    version='2.0.1',
-    description='Embedded Answers XBlock',   # TODO: write a better description.
-    license='UNKNOWN',          # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
-    packages=[
-        'embedded_answers',
-    ],
+    version='2.0.2',
+    description='Embedded Answers XBlock',  # TODO: write a better description.
+    license='UNKNOWN',  # TODO: choose a license: 'AGPL v3' and 'Apache 2.0' are popular.
+    packages=find_packages(include=['embedded_answers*'], exclude=['*.test', '*.tests']),
     install_requires=[
         'XBlock',
     ],
