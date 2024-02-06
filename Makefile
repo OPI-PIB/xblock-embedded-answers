@@ -16,8 +16,8 @@ help:
 	@perl -nle'print $& if m{^[\.a-zA-Z_-]+:.*?## .*$$}' $(MAKEFILE_LIST) | sort | awk 'BEGIN {FS = ":.*?## "}; {printf "\033[36m  %-25s\033[0m %s\n", $$1, $$2}'
 
 dev.clean:
+	-docker stop $(REPO_NAME)-dev
 	-docker rm $(REPO_NAME)-dev
-	-docker rmi $(REPO_NAME)-dev
 
 dev.build:
 	docker build -t $(REPO_NAME)-dev $(CURDIR)
