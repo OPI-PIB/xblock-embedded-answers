@@ -34,7 +34,8 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
         this.submissionFeedbackContainer = this.$element.find('.submission-feedback');
         this.counter = 1;
         this.questionPromptContainer.find("input").each(function() {
-            $(this).before('<span class="input-number">' + self.counter + '</span>');
+            $(this).addClass('textinput');
+            $(this).before('<span class="input-number">'+'(' + self.counter + ')'+'</span>');
             self.counter++;
         });
     }
@@ -212,20 +213,16 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
 
     this.showNotification = (result) => {
         this.resetNotifications();
-        this.resetIcons();
-        if (result.status==="general"){
-            this.$element.find('.notification-submit .icon').addClass('fa-exclamation-circle');
-        } else if (result.status==="success"){
-            this.$element.find('.notification-submit .icon').addClass('fa-check')
-        }
-        else if (result.status==="warning") {
-            this.$element.find('.notification-submit .icon').addClass('fa-exclamation-circle')
-        }
-        else {
-            this.$element.find('.notification-submit .icon').addClass('fa-close')
-        }
-        this.$element.find('.notification-submit').removeClass('is-hidden').addClass(result.status);
-        this.$element.find('.notification-submit .notification-message').html(result.msg);
+        var notificationMessage = this.$element.find('.notification-submit .notification-message');
+
+        notificationMessage.removeClass('success error warning general');
+
+        notificationMessage.addClass(result.status);
+
+        var notificationContainer = this.$element.find('.notification-submit');
+        notificationContainer.removeClass('is-hidden').addClass(result.status);
+        
+        notificationMessage.html(result.msg);
 	}
 
     this.showSubmitFeedback = (feedback) => {
@@ -281,11 +278,12 @@ function EmbeddedAnswersXBlockInitView(runtime, element) {
                 if (this.getAttribute('xblock_id') == self.xblock_id) {
                     var decoration_number = input_text_order[this.getAttribute('input')];
                     if (decoration_number !== undefined){
-                        // add new decoration to the select
                         if (correctness[this.getAttribute('input')] == 'True') {
-                            $('<img src="static/image/Done_weight-400.svg" class="status correct mx-1"/>').insertAfter(this);
+                            $(this).addClass('correct');
+                            $('<img src="/static/navoicastyle/images/Done_Weight-400.svg" class="status correct mx-1"/>').insertAfter(this);
                         } else {
-                            $('<img src="static/image/Done_weight-400.svg" class="status incorrect mx-1"/>').insertAfter(this);
+                            $(this).addClass('incorrect');
+                            $('<img src="/static/navoicastyle/images/Close_Weight-400.svg" class="status incorrect mx-1"/>').insertAfter(this);
                         }
                     }
                 }
